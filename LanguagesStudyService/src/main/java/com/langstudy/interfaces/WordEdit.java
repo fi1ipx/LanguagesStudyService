@@ -7,10 +7,6 @@ package com.langstudy.interfaces;
 
 import com.langstudy.objects.Word;
 
-/**
- *
- * @author Fil
- */
 public interface WordEdit {
     boolean save(Word word);
     boolean delete(Word word);

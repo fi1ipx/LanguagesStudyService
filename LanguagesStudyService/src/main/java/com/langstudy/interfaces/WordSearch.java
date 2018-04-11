@@ -9,10 +9,6 @@ import com.langstudy.objects.Lang;
 import com.langstudy.objects.Word;
 import java.util.List;
 
-/**
- *
- * @author Fil
- */
 public interface WordSearch {
     List<Word> getWords();
     List<Word> getWords(Lang lang);

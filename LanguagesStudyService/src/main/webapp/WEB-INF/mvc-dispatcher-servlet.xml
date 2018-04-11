@@ -22,6 +22,8 @@
 	</property>
     </bean>
 
+    <bean id="wordSearchImpl" class="com.langstudy.impls.WordSearchImpl" />
+    
     <mvc:resources mapping="/resources/**" location="/theme_default/"  />
 
     <mvc:annotation-driven />

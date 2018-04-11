@@ -14,5 +14,27 @@
     <body>
         <h4>Spring 4 Web MVC via Annotations</h4>
         Spring says: <span class="blue">${msg}</span>
+    
+    
+    <c:if test="${!empty getWords}">
+        <table class="tg">
+            <tr>
+                <th width="80">ID</th>
+                <th width="120">Name</th>
+                <th width="120">Lang</th>
+                <th width="120">Rank</th>
+                <th width="200">Definition</th>
+            </tr>
+            <c:forEach items="${getWords}" var="word">
+                <tr>
+                    <td>${word.id}</td>
+                    <td>${word.name}</td>
+                    <td>${word.lang}</td>
+                    <td>${word.rank}</td>
+                    <td>${word.defenition}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
     </body>
 </html>

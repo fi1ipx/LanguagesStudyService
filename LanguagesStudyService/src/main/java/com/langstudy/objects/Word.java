@@ -7,12 +7,12 @@ package com.langstudy.objects;
 
 public class Word {
     private int id;
-    private int name;
+    private String name;
     private Lang lang;
     private int rank;
     private String defenition;
 
-    public Word(int id, int name, Lang lang, int rank, String defenition) {
+    public Word(int id, String name, Lang lang, int rank, String defenition) {
         this.id = id;
         this.name = name;
         this.lang = lang;
@@ -31,11 +31,11 @@ public class Word {
         this.id = id;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
