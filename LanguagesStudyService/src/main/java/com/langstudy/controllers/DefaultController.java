@@ -6,6 +6,7 @@
 package com.langstudy.controllers;
 
 import com.langstudy.impls.WordSearchImpl;
+import com.langstudy.interfaces.WordSearch;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,18 +18,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Controller
 //@RequestMapping("/")
 public class DefaultController {
-    private WordSearchImpl wordSearchImpl;
+    private WordSearch wordSearch;
 
     @Autowired(required = true)
-    @Qualifier(value = "wordSearchImpl")
-    public void setBookService(WordSearchImpl wsi) {
-        this.wordSearchImpl = wsi;
+    @Qualifier(value = "wordSearch")
+    public void setWordService(WordSearch wsi) {
+        this.wordSearch = wsi;
     }
     
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(ModelMap map) {
        map.addAttribute("word", new Word());
-       map.addAttribute("getWords", this.wordSearchImpl.getWords());
+       map.addAttribute("getWords", this.wordSearch.getWords());
        map.put("msg", "Hello Spring 4 Web MVC!");
        return "index";
    }

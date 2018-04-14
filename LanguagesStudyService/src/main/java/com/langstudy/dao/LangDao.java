@@ -5,10 +5,10 @@
  */
 package com.langstudy.dao;
 
-/**
- *
- * @author Fil
- */
+import com.langstudy.objects.Lang;
+import com.langstudy.objects.Word;
+import java.util.List;
+
 public interface LangDao {
-    
+    public List<Lang> getLangs();
 }

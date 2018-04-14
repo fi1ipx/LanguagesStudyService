@@ -5,9 +5,14 @@
  */
 package com.langstudy.objects;
 
+import java.util.Set;
+
 public class Lang {
     private int id;
+    
     private String name;
+    
+    private Set words;
 
     public Lang(int id, String name) {
         this.id = id;
@@ -31,6 +36,14 @@ public class Lang {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set getWords() {
+        return words;
+    }
+
+    public void setWords(Set words) {
+        this.words = words;
     }
     
     @Override

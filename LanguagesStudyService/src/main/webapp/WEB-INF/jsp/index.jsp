@@ -20,16 +20,16 @@
         <table class="tg">
             <tr>
                 <th width="80">ID</th>
-                <th width="120">Name</th>
                 <th width="120">Lang</th>
+                <th width="120">Name</th>
                 <th width="120">Rank</th>
-                <th width="200">Definition</th>
+                <th width="300">Definition</th>
             </tr>
             <c:forEach items="${getWords}" var="word">
                 <tr>
                     <td>${word.id}</td>
-                    <td>${word.name}</td>
                     <td>${word.lang}</td>
+                    <td>${word.name}</td>
                     <td>${word.rank}</td>
                     <td>${word.defenition}</td>
                 </tr>

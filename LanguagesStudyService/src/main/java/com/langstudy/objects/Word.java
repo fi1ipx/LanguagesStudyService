@@ -5,11 +5,17 @@
  */
 package com.langstudy.objects;
 
+import javax.persistence.*;
+
 public class Word {
     private int id;
+    
     private String name;
+    
     private Lang lang;
+    
     private int rank;
+    
     private String defenition;
 
     public Word(int id, String name, Lang lang, int rank, String defenition) {

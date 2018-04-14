@@ -3,38 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.langstudy.impls;
+package com.langstudy.dao;
 
-import com.langstudy.dao.LangDao;
-import com.langstudy.dao.WordDao;
-import com.langstudy.interfaces.WordSearch;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import com.langstudy.objects.Lang;
 import com.langstudy.objects.Word;
-import java.util.ArrayList;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+public class WordDaoImpl implements WordDao{
+    private static final Logger logger = LoggerFactory.getLogger(WordDaoImpl.class);
     
-@Service
-public class WordSearchImpl implements WordSearch {
-    private static final Logger logger = LoggerFactory.getLogger(WordSearchImpl.class);
-    
-    private WordDao wordDao;
+    private SessionFactory sessionFactory;
 
-    public void setWordDao(WordDao wordDao) {
-        this.wordDao = wordDao;
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    @Transactional
     public List<Word> getWords() {
-        logger.info("preved medved");
-        System.out.println(wordDao.toString());
-        return this.wordDao.getWords();
+        Session session = this.sessionFactory.getCurrentSession();
+        logger.info(session.toString());
+        List<Word> wordsList = session.createQuery("from Word").list();
+        return wordsList;
     }
 
     @Override
@@ -66,5 +62,4 @@ public class WordSearchImpl implements WordSearch {
     public Word getWord(int wordId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

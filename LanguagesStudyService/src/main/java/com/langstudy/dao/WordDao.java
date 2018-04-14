@@ -5,10 +5,16 @@
  */
 package com.langstudy.dao;
 
-/**
- *
- * @author Fil
- */
+import com.langstudy.objects.Lang;
+import com.langstudy.objects.Word;
+import java.util.List;
+
 public interface WordDao {
-    
+    List<Word> getWords();
+    List<Word> getWords(Lang lang);
+    List<Word> getWords(String def);
+    List<Word> getWords(Character letter);
+    List<Word> getFirstNWords(int firstN);
+    Word getWord(String name);
+    Word getWord(int wordId); 
 }
