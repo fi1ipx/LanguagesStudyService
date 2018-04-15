@@ -7,8 +7,9 @@ package com.langstudy.impls;
 
 import com.langstudy.dao.LangDao;
 import com.langstudy.dao.WordDao;
-import com.langstudy.interfaces.WordSearch;
+import com.langstudy.interfaces.StudyService;
 import com.langstudy.objects.Lang;
+import com.langstudy.objects.User;
 import com.langstudy.objects.Word;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ import org.slf4j.LoggerFactory;
 
     
 @Service
-public class WordSearchImpl implements WordSearch {
-    private static final Logger logger = LoggerFactory.getLogger(WordSearchImpl.class);
+public class StudyServiceImpl implements StudyService {
+    private static final Logger logger = LoggerFactory.getLogger(StudyServiceImpl.class);
     
     private WordDao wordDao;
 
@@ -32,8 +33,6 @@ public class WordSearchImpl implements WordSearch {
     @Override
     @Transactional
     public List<Word> getWords() {
-        logger.info("preved medved");
-        System.out.println(wordDao.toString());
         return this.wordDao.getWords();
     }
 
@@ -66,5 +65,36 @@ public class WordSearchImpl implements WordSearch {
     public Word getWord(int wordId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public boolean save(Word word) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean delete(Word word) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean edit(Word word) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean add(Word word) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean login(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void logout(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }

@@ -44,7 +44,7 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
     
-    <bean id="wordSearch" class="com.langstudy.impls.WordSearchImpl">
+    <bean id="studyService" class="com.langstudy.impls.StudyServiceImpl">
         <property name="wordDao" ref="wordDao"/>
     </bean>
     
