@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.langstudy.dao;
+package com.langstudy.interfaces;
 
 import com.langstudy.objects.Lang;
-import com.langstudy.objects.Word;
 import java.util.List;
 
-public interface LangDao {
-    public List<Lang> getLangs();
-    public void addLang(Lang lang);
+public interface Languages {
+    List<Lang> getLangs();
+    void addLang(Lang lang);
     public Lang getLang(int langId);
 }

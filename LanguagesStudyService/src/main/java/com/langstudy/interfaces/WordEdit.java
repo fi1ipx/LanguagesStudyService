@@ -8,8 +8,8 @@ package com.langstudy.interfaces;
 import com.langstudy.objects.Word;
 
 public interface WordEdit {
-    boolean save(Word word);
-    boolean delete(Word word);
-    boolean edit(Word word);
-    boolean add(Word word);
+    void saveWord(Word word);
+    void deleteWord(Word word);
+    void editWord(Word word);
+    void addWord(Word word);
 }

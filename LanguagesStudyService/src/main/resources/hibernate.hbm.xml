@@ -41,24 +41,20 @@ Contributor(s):
 -->
 <hibernate-mapping>
   <class name="com.langstudy.objects.Word" table="words">
-    <id name="id" column="id"/>
-    <property name="name" column="word"/>
-    <property name="rank" column="rank"/>
-    <property name="defenition" column="definition"/>
-    <many-to-one name="lang" class="com.langstudy.objects.Lang" fetch="join">
-        <column name="lang_id" />
+    <id column="id" name="id">
+        <generator class="identity" />
+    </id>
+    <property column="word" name="name"/>
+    <property column="rank" name="rank"/>
+    <property column="definition" name="definition"/>
+    <many-to-one class="com.langstudy.objects.Lang" fetch="join" name="lang">
+      <column name="lang_id"/>
     </many-to-one>
   </class>
-  
   <class name="com.langstudy.objects.Lang" table="languages">
-    <id name="id" column="id"/>
-    <property name="name" column="name"/>
-    
-    <set name="words" table="words" inverse="false" lazy="true">
-        <key>
-            <column name="lang_id" />
-        </key>
-        <one-to-many class="com.langstudy.objects.Word"/>
-    </set>
+    <id column="id" name="id">
+        <generator class="identity" />
+    </id>
+    <property column="name" name="name"/>
   </class>
 </hibernate-mapping>

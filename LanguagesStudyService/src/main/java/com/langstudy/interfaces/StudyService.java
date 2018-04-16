@@ -5,6 +5,6 @@
  */
 package com.langstudy.interfaces;
 
-public interface StudyService extends WordSearch, WordEdit, SecureLibrary { 
+public interface StudyService extends WordSearch, WordEdit, SecureLibrary, Languages { 
     
 }

@@ -25,9 +25,14 @@ public class StudyServiceImpl implements StudyService {
     private static final Logger logger = LoggerFactory.getLogger(StudyServiceImpl.class);
     
     private WordDao wordDao;
+    private LangDao langDao;
 
     public void setWordDao(WordDao wordDao) {
         this.wordDao = wordDao;
+    }
+
+    public void setLangDao(LangDao langDao) {
+        this.langDao = langDao;
     }
     
     @Override
@@ -37,64 +42,93 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
     public List<Word> getWords(Lang lang) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public List<Word> getWords(String def) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public List<Word> getWords(Character letter) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public List<Word> getFirstNWords(int firstN) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public Word getWord(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public Word getWord(int wordId) {
+        return this.wordDao.getWord(wordId);
+    }
+
+    @Override
+    @Transactional
+    public void saveWord(Word word) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean save(Word word) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void deleteWord(Word word) {
+        this.wordDao.deleteWord(word);
     }
 
     @Override
-    public boolean delete(Word word) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void editWord(Word word) {
+        this.wordDao.editWord(word);
     }
 
     @Override
-    public boolean edit(Word word) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void addWord(Word word) {
+        logger.info(word.getName() + " lang id = " + word.getLang().getId());
+        this.wordDao.addWord(word);
     }
 
     @Override
-    public boolean add(Word word) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    @Transactional
     public boolean login(User user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional
     public void logout(User user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    @Transactional
+    public List<Lang> getLangs() {
+        return this.langDao.getLangs();
+    }
     
-    
+    @Override
+    @Transactional
+    public void addLang(Lang lang) {
+        this.langDao.addLang(lang);
+    }
+
+    @Override
+    @Transactional
+    public Lang getLang(int langId) {
+        return this.langDao.getLang(langId);
+    }
 }

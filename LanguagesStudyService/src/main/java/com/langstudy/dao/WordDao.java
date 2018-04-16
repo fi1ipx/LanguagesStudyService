@@ -16,5 +16,10 @@ public interface WordDao {
     List<Word> getWords(Character letter);
     List<Word> getFirstNWords(int firstN);
     Word getWord(String name);
-    Word getWord(int wordId); 
+    Word getWord(int wordId);
+    
+    void saveWord(Word word);
+    void deleteWord(Word word);
+    void editWord(Word word);
+    void addWord(Word word);
 }

@@ -16,14 +16,14 @@ public class Word {
     
     private int rank;
     
-    private String defenition;
+    private String definition;
 
     public Word(int id, String name, Lang lang, int rank, String defenition) {
         this.id = id;
         this.name = name;
         this.lang = lang;
         this.rank = rank;
-        this.defenition = defenition;
+        this.definition = defenition;
     }
 
     public Word() {
@@ -61,11 +61,11 @@ public class Word {
         this.rank = rank;
     }
 
-    public String getDefenition() {
-        return defenition;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setDefenition(String defenition) {
-        this.defenition = defenition;
+    public void setDefinition(String defenition) {
+        this.definition = defenition;
     }
 }

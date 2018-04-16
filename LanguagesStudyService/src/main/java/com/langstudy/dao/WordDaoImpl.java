@@ -7,19 +7,20 @@ package com.langstudy.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
 import com.langstudy.objects.Lang;
 import com.langstudy.objects.Word;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class WordDaoImpl implements WordDao{
     private static final Logger logger = LoggerFactory.getLogger(WordDaoImpl.class);
     
     private SessionFactory sessionFactory;
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -60,6 +61,32 @@ public class WordDaoImpl implements WordDao{
 
     @Override
     public Word getWord(int wordId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = this.sessionFactory.getCurrentSession();
+        Word word = (Word) session.load(Word.class, new Integer(wordId));
+        return word;
+    }
+
+    @Override
+    public void saveWord(Word word) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(word);
+    }
+
+    @Override
+    public void deleteWord(Word word) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.delete(word);
+    }
+
+    @Override
+    public void editWord(Word word) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(word);
+    }
+
+    @Override
+    public void addWord(Word word) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(word);
     }
 }

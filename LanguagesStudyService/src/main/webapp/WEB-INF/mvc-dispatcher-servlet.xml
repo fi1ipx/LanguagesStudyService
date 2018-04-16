@@ -44,8 +44,13 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
     
+    <bean id="langDao" class="com.langstudy.dao.LangDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+    
     <bean id="studyService" class="com.langstudy.impls.StudyServiceImpl">
         <property name="wordDao" ref="wordDao"/>
+        <property name="langDao" ref="langDao"/>
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
