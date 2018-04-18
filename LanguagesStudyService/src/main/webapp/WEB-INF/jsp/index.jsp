@@ -14,10 +14,19 @@
         <script src="${cp}/resources/js/js.js"></script>
     </head>
     <body>
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+	   <h2>Welcome : ${pageContext.request.userPrincipal.name} </h2>
+           <c:url var="logoutUrl" value="/logout"/>
+            <form action="${logoutUrl}" method="post">
+                <input type="submit" value="Logout"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form> 
+	</c:if>
+        
         <h4>Spring 4 Web MVC via Annotations</h4>
         Spring says: <span class="blue">${msg}</span>
     
-        
+    
     <h3>Word list</h3>
     <c:if test="${!empty getWords}">
         <table class="tg">

@@ -76,4 +76,9 @@ public class DefaultController {
         this.studyService.addLang(language);
         return "redirect:/";
     }
+    
+    @RequestMapping("/logout")
+    public String showLoggedout(){
+        return "logout";
+    }
 }
