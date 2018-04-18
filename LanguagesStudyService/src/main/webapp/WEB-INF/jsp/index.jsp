@@ -17,6 +17,8 @@
         <h4>Spring 4 Web MVC via Annotations</h4>
         Spring says: <span class="blue">${msg}</span>
     
+        
+    <h3>Word list</h3>
     <c:if test="${!empty getWords}">
         <table class="tg">
             <tr>
@@ -42,7 +44,7 @@
         </table>
     </c:if>
     
-        <br><br>
+    <h3>Language list</h3>
     <c:if test="${!empty langList}">
         <table class="tg">
             <tr>
@@ -58,8 +60,35 @@
         </table>
     </c:if>
         
-    <h1>Word editor</h1>
-
+    <h3>User list</h3>
+    <c:if test="${!empty usersList}">
+        <table class="tg">
+            <tr>
+                <th width="80">ID</th>
+                <th width="120">First name</th>
+                <th width="120">Middle name</th>
+                <th width="120">Last name</th>
+                <th width="120">Login</th>
+                <th width="120">Password</th>
+                <th width="120">Email</th>
+                <th width="120">Admin</th>
+            </tr>
+            <c:forEach items="${usersList}" var="user">
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.middleName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.login}</td>
+                    <td>${user.password}</td>
+                    <td>${user.email}</td>
+                    <td>${user.admin}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    
+    <h3>Language editor</h3>
     <c:url var="addAction" value="/langs/add"/>
     <form:form action="${addAction}" commandName="language">
     <table>
@@ -101,8 +130,7 @@
     </table>
     </form:form>
     
-    
-    <br><br><br><br>
+    <h3>Word editor</h3>
     <c:url var="addAction" value="/words/add"/>
     <form:form action="${addAction}" commandName="editorword">
     <table>

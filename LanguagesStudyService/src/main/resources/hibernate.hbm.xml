@@ -42,7 +42,7 @@ Contributor(s):
 <hibernate-mapping>
   <class name="com.langstudy.objects.Word" table="words">
     <id column="id" name="id">
-        <generator class="identity" />
+      <generator class="identity"/>
     </id>
     <property column="word" name="name"/>
     <property column="rank" name="rank"/>
@@ -53,8 +53,20 @@ Contributor(s):
   </class>
   <class name="com.langstudy.objects.Lang" table="languages">
     <id column="id" name="id">
-        <generator class="identity" />
+      <generator class="identity"/>
     </id>
     <property column="name" name="name"/>
+  </class>
+  <class name="com.langstudy.objects.User" table="users">
+    <id column="id" name="id">
+      <generator class="identity"/>
+    </id>
+    <property column="first_name" name="firstName"/>
+    <property column="middle_name" name="middleName"/>
+    <property column="last_name" name="lastName"/>
+    <property column="login" name="login"/>
+    <property column="password" name="password"/>
+    <property column="email" name="email"/>
+    <property column="admin" name="admin"/>
   </class>
 </hibernate-mapping>

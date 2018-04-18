@@ -5,7 +5,11 @@
  */
 package com.langstudy.interfaces;
 
-public interface StudyService extends WordSearch, WordEdit,
-        SecureLibrary, Languages, Users { 
-    
+import com.langstudy.objects.User;
+import java.util.List;
+
+public interface Users {
+    List<User> getUsers();
+    void addUser(User user);
+    public User getUser(int userId);
 }

@@ -8,16 +8,17 @@ package com.langstudy.objects;
 public class User {
     private int id;
     private String firstName;
-    private String midleName;
+    private String middleName;
     private String lastName;
     private String login;
     private String password;
     private String email;
+    private boolean admin;
 
     public User(int id, String firstName, String midleName, String lastName, String login, String password, String email) {
         this.id = id;
         this.firstName = firstName;
-        this.midleName = midleName;
+        this.middleName = midleName;
         this.lastName = lastName;
         this.login = login;
         this.password = password;
@@ -43,12 +44,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getMidleName() {
-        return midleName;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setMidleName(String midleName) {
-        this.midleName = midleName;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getLastName() {
@@ -81,5 +82,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

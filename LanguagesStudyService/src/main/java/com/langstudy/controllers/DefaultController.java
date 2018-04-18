@@ -35,6 +35,7 @@ public class DefaultController {
        map.addAttribute("language", new Lang());
        map.addAttribute("getWords", this.studyService.getWords());
        map.addAttribute("langList", this.studyService.getLangs());
+       map.addAttribute("usersList", this.studyService.getUsers());
        map.addAttribute("lang", new Lang());
        map.put("msg", "Hello Spring 4 Web MVC!");
        return "index";
@@ -49,11 +50,12 @@ public class DefaultController {
     
     @RequestMapping("edit/{id}")
     public String editWord(@PathVariable("id") int id, ModelMap map) {
-        map.addAttribute("editorword", this.studyService.getWord(id));
-        map.addAttribute("language", new Lang());
-        map.addAttribute("lang", new Lang());
-        map.addAttribute("getWords", this.studyService.getWords());
-        map.addAttribute("langList", this.studyService.getLangs());
+       map.addAttribute("editorword", new Word());
+       map.addAttribute("language", new Lang());
+       map.addAttribute("getWords", this.studyService.getWords());
+       map.addAttribute("langList", this.studyService.getLangs());
+       map.addAttribute("usersList", this.studyService.getUsers());
+       map.addAttribute("lang", new Lang());
         return "index";
     }
     

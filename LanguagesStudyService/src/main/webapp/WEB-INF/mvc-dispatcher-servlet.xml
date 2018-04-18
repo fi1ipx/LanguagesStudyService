@@ -48,9 +48,14 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
     
+    <bean id="userDao" class="com.langstudy.dao.UserDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+    
     <bean id="studyService" class="com.langstudy.impls.StudyServiceImpl">
         <property name="wordDao" ref="wordDao"/>
         <property name="langDao" ref="langDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -59,8 +64,7 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
     
-    <mvc:resources mapping="/resources/**" location="/theme_default/"  />
+    <mvc:resources mapping="/resources/**" location="/resources/"  />
 
-    <mvc:annotation-driven />
-	
+    <mvc:annotation-driven />	
 </beans>

@@ -6,6 +6,7 @@
 package com.langstudy.impls;
 
 import com.langstudy.dao.LangDao;
+import com.langstudy.dao.UserDao;
 import com.langstudy.dao.WordDao;
 import com.langstudy.interfaces.StudyService;
 import com.langstudy.objects.Lang;
@@ -26,6 +27,7 @@ public class StudyServiceImpl implements StudyService {
     
     private WordDao wordDao;
     private LangDao langDao;
+    private UserDao userDao;
 
     public void setWordDao(WordDao wordDao) {
         this.wordDao = wordDao;
@@ -33,6 +35,10 @@ public class StudyServiceImpl implements StudyService {
 
     public void setLangDao(LangDao langDao) {
         this.langDao = langDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
     
     @Override
@@ -130,5 +136,23 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public Lang getLang(int langId) {
         return this.langDao.getLang(langId);
+    }
+
+    @Override
+    @Transactional
+    public List<User> getUsers() {
+        return this.userDao.getUsers();
+    }
+
+    @Override
+    @Transactional
+    public void addUser(User user) {
+        this.userDao.addUser(user);
+    }
+
+    @Override
+    @Transactional
+    public User getUser(int userId) {
+        return this.userDao.getUser(userId);
     }
 }
