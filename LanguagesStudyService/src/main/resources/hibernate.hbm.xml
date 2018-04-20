@@ -57,7 +57,7 @@ Contributor(s):
     </id>
     <property column="name" name="name"/>
   </class>
-  <class name="com.langstudy.objects.User" table="users">
+<!--  <class name="com.langstudy.objects.User" table="users">
     <id column="id" name="id">
       <generator class="identity"/>
     </id>
@@ -68,5 +68,5 @@ Contributor(s):
     <property column="password" name="password"/>
     <property column="email" name="email"/>
     <property column="admin" name="admin"/>
-  </class>
+  </class>-->
 </hibernate-mapping>

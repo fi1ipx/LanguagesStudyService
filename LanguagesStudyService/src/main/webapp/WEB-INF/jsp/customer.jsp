@@ -8,11 +8,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>There will be landing</title>
+        <title>Customer Page</title>
     </head>
     <body>
-        <h1>Index page with project description</h1>
-        <a href="<c:url value='/customer' />">Customer page</a>
-        <a href="<c:url value='/admin' />">Admin page</a>
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+	   <h2>Welcome : ${pageContext.request.userPrincipal.name} </h2>
+           <c:url var="logoutUrl" value="/logout"/>
+            <form action="${logoutUrl}" method="post">
+                <input type="submit" value="Logout"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form> 
+	</c:if>
     </body>
 </html>
