@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class DefaultController {
@@ -139,6 +140,13 @@ public class DefaultController {
         // if e-mail and password correct send user activation e-mail
         // if password incorrect, send user error 
         if (userEmail.length() > 0 && password.length() > 0 &&  passwordConfirm.length() > 0) {
+            User user = new User();
+            user.setUserName(userEmail);
+            user.setEnabled(true);
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            password = passwordEncoder.encode(password);
+            user.setPassword(password);
+            this.studyService.addUser(user);
             map.put("email", userEmail);
             map.put("password", password);
             map.put("confirm", passwordConfirm);
