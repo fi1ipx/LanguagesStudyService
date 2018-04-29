@@ -110,18 +110,6 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean login(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @Transactional
-    public void logout(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @Transactional
     public List<Lang> getLangs() {
         return this.langDao.getLangs();
     }

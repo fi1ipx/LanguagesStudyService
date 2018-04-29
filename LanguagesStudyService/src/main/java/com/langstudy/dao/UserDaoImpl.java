@@ -44,4 +44,16 @@ public class UserDaoImpl implements UserDao{
         User user = (User) session.load(User.class, userName);
         return user;
     }
+
+    @Override
+    public void deleteUser(User user) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.delete(user);
+    }
+
+    @Override
+    public void editUser(User user) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(user);
+    }
 }
