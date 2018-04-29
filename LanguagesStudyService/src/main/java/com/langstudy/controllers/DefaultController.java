@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Controller
 public class DefaultController {
@@ -52,7 +52,7 @@ public class DefaultController {
     
     @RequestMapping("/admin/edit/{id}")
     public String editWord(@PathVariable("id") int id, ModelMap map) {
-       map.addAttribute("editorword", new Word());
+       map.addAttribute("editorword", this.studyService.getWord(id));
        map.addAttribute("language", new Lang());
        map.addAttribute("getWords", this.studyService.getWords());
        map.addAttribute("langList", this.studyService.getLangs());
@@ -102,5 +102,32 @@ public class DefaultController {
     @RequestMapping(value = "/customer", method = RequestMethod.GET )
     public String logincustomer() {
         return "customer";
+    }
+    
+    @RequestMapping(value = "/testpath", method = RequestMethod.GET )
+    public String testPath() {
+        return "signup";
+    }
+            
+    @RequestMapping(value = "/signup", method = RequestMethod.GET )
+    public String signUp() {
+        return "signup";
+    }
+    
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String registerCustomer(ModelMap map, @RequestParam("user_email") String userEmail,
+            @RequestParam("password") String password,
+            @RequestParam("password_confirm") String passwordConfirm) {
+        // Check input data
+        // if e-mail and password correct send user activation e-mail
+        // if password incorrect, send user error 
+        if (userEmail.length() > 0 && password.length() > 0 &&  passwordConfirm.length() > 0) {
+            map.put("email", userEmail);
+            map.put("password", password);
+            map.put("confirm", passwordConfirm);
+            return "checkmail";
+        }
+        else
+            return "signup";
     }
 }

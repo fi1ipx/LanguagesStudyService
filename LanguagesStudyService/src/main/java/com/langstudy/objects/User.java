@@ -6,66 +6,16 @@
 package com.langstudy.objects;
 
 public class User {
-    private int id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String login;
-    private String password;
-    private String email;
-    private boolean admin;
+    public String userName;
+    public String password;
+    public boolean enabled;
 
-    public User(int id, String firstName, String midleName, String lastName, String login, String password, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = midleName;
-        this.lastName = lastName;
-        this.login = login;
-        this.password = password;
-        this.email = email;
+    public String getUserName() {
+        return userName;
     }
 
-    public User() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -76,19 +26,13 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
+    
+    
 }

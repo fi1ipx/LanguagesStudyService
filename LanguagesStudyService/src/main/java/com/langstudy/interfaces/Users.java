@@ -11,5 +11,5 @@ import java.util.List;
 public interface Users {
     List<User> getUsers();
     void addUser(User user);
-    public User getUser(int userId);
+    public User getUser(String userName);
 }

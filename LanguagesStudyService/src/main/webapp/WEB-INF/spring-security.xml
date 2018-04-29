@@ -19,7 +19,7 @@
 <!--            <intercept-url pattern="/**" access="isAuthenticated()" />-->
 <!--            <intercept-url pattern="/j_spring_security_check" access="isAuthenticated()" />-->
             <form-login login-processing-url="/j_spring_security_check" 
-                        login-page="/login" default-target-url="/customer"
+                        login-page="/login" default-target-url="/index"
                         always-use-default-target="false" authentication-failure-url="/login?error"
                 username-parameter="user_login" password-parameter="password_login"/>
             <logout logout-success-url="/" invalidate-session="true" logout-url="/logout" />
@@ -50,6 +50,6 @@
         <beans:property name="password" value="root"/>
     </beans:bean>
     
-    <beans:bean id ="passwordEncoder" class = "org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method = "getInstance" /> 
-    
+    <beans:bean id ="passwordEncoderNoop" class = "org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method = "getInstance" /> 
+    <beans:bean id ="passwordEncoder" class = "org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" /> 
 </beans:beans>

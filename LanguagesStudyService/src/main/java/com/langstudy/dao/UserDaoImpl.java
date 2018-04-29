@@ -39,9 +39,9 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUser(String userName) {
         Session session = this.sessionFactory.getCurrentSession();
-        User user = (User) session.load(User.class, new Integer(userId));
+        User user = (User) session.load(User.class, userName);
         return user;
     }
 }

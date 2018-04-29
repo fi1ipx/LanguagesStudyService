@@ -12,7 +12,23 @@
     </head>
     <body>
         <h1>Index page with project description</h1>
-        <a href="<c:url value='/customer' />">Customer page</a>
-        <a href="<c:url value='/admin' />">Admin page</a>
+        
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+	    <a href="<c:url value='/customer' />">Profile</a>
+	</c:if>
+        <c:if test="${pageContext.request.userPrincipal.name == null}">
+	    <a href="<c:url value='/signup' />">Sign up</a>
+        </c:if>
+            
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+	    <a href="<c:url value='/logout' />">Logout</a>
+	</c:if>
+        <c:if test="${pageContext.request.userPrincipal.name == null}">
+	    <a href="<c:url value='/login' />">Login</a>
+        </c:if>
+            
+        <c:if test="${pageContext.request.userPrincipal.name == 'admin'}">
+	    <a href="<c:url value='/admin' />">Administration</a>
+	</c:if>
     </body>
 </html>

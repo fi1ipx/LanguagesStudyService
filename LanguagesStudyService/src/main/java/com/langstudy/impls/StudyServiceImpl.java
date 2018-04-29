@@ -152,7 +152,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public User getUser(int userId) {
-        return this.userDao.getUser(userId);
+    public User getUser(String userName) {
+        return this.userDao.getUser(userName);
     }
 }

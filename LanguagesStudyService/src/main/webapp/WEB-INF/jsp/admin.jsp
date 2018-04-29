@@ -23,10 +23,6 @@
             </form> 
 	</c:if>
         
-        <h4>Spring 4 Web MVC via Annotations</h4>
-        Spring says: <span class="blue">${msg}</span>
-    
-    
     <h3>Word list</h3>
     <c:if test="${!empty getWords}">
         <table class="tg">
@@ -53,68 +49,8 @@
         </table>
     </c:if>
     
-    <h3>Language list</h3>
-    <c:if test="${!empty langList}">
-        <table class="tg">
-            <tr>
-                <th width="80">ID</th>
-                <th width="120">Name</th>
-            </tr>
-            <c:forEach items="${langList}" var="lang">
-                <tr>
-                    <td>${lang.id}</td>
-                    <td>${lang.name}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
-        
-    
-    
-    <h3>Language editor</h3>
-    <c:url var="addAction" value="/langs/add"/>
-    <form:form action="${addAction}" commandName="language">
-    <table>
-        <c:if test="${!empty language.name}">
-            <tr>
-                <td>
-                    <form:label path="id">
-                        <spring:message text="ID"/>
-                    </form:label>
-                </td>
-                <td>
-                    <form:input path="id" readonly="true" size="8" disabled="true"/>
-                    <form:hidden path="id"/>
-                </td>
-            </tr>
-        </c:if>
-        <tr>
-            <td>
-                <form:label path="name">
-                    <spring:message text="Name"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="name"/>
-            </td>
-        </tr>  
-        <tr>
-            <td colspan="2">
-                <c:if test="${!empty language.name}">
-                    <input type="submit"
-                           value="<spring:message text="Edit language"/>"/>
-                </c:if>
-                <c:if test="${empty language.name}">
-                    <input type="submit"
-                           value="<spring:message text="Add language"/>"/>
-                </c:if>
-            </td>
-        </tr>
-    </table>
-    </form:form>
-    
     <h3>Word editor</h3>
-    <c:url var="addAction" value="/words/add"/>
+    <c:url var="addAction" value="/admin/words/add"/>
     <form:form action="${addAction}" commandName="editorword">
     <table>
         <c:if test="${!empty editorword.name}">
@@ -179,6 +115,68 @@
                 <c:if test="${empty editorword.name}">
                     <input type="submit"
                            value="<spring:message text="Add word"/>"/>
+                </c:if>
+            </td>
+        </tr>
+    </table>
+    </form:form>
+    
+    
+    
+    <h3>Language list</h3>
+    <c:if test="${!empty langList}">
+        <table class="tg">
+            <tr>
+                <th width="80">ID</th>
+                <th width="120">Name</th>
+            </tr>
+            <c:forEach items="${langList}" var="lang">
+                <tr>
+                    <td>${lang.id}</td>
+                    <td>${lang.name}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+        
+    
+    
+    <h3>Language editor</h3>
+    <c:url var="addAction" value="/langs/add"/>
+    <form:form action="${addAction}" commandName="language">
+    <table>
+        <c:if test="${!empty language.name}">
+            <tr>
+                <td>
+                    <form:label path="id">
+                        <spring:message text="ID"/>
+                    </form:label>
+                </td>
+                <td>
+                    <form:input path="id" readonly="true" size="8" disabled="true"/>
+                    <form:hidden path="id"/>
+                </td>
+            </tr>
+        </c:if>
+        <tr>
+            <td>
+                <form:label path="name">
+                    <spring:message text="Name"/>
+                </form:label>
+            </td>
+            <td>
+                <form:input path="name"/>
+            </td>
+        </tr>  
+        <tr>
+            <td colspan="2">
+                <c:if test="${!empty language.name}">
+                    <input type="submit"
+                           value="<spring:message text="Edit language"/>"/>
+                </c:if>
+                <c:if test="${empty language.name}">
+                    <input type="submit"
+                           value="<spring:message text="Add language"/>"/>
                 </c:if>
             </td>
         </tr>
