@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
 	<http use-expressions="true" auto-config='true' disable-url-rewriting="false">
-              <!-- enable remember me -->
+            <!-- enable remember me -->
             <remember-me 
                 token-validity-seconds="1209600"
                 remember-me-parameter="remember-me" 
@@ -15,9 +15,6 @@
             <csrf disabled="true"/>
             <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
             <intercept-url pattern="/customer**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
-            <!--<intercept-url pattern="/customer**" access="isAuthenticated()" />-->
-<!--            <intercept-url pattern="/**" access="isAuthenticated()" />-->
-<!--            <intercept-url pattern="/j_spring_security_check" access="isAuthenticated()" />-->
             <form-login login-processing-url="/j_spring_security_check" 
                         login-page="/login" default-target-url="/index"
                         always-use-default-target="false" authentication-failure-url="/login?error"
@@ -27,11 +24,6 @@
 
 	<authentication-manager>
             <authentication-provider user-service-ref="jdbcGroupsImpl">
-    <!--	    <user-service>
-                    <user name="admin" password="{noop}admin" authorities="ROLE_ADMIN,ROLE_USER" />
-                    <user name="user" password="{noop}user" authorities="ROLE_USER" />
-                </user-service>-->
-<!--                <jdbc-user-service data-source-ref="secDataSource" />-->
                 <password-encoder ref="passwordEncoder" />
             </authentication-provider>
 	</authentication-manager>
