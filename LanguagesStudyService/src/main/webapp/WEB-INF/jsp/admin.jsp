@@ -121,28 +121,28 @@
     </table>
     </form:form>
     
-    
-    
     <h3>Language list</h3>
     <c:if test="${!empty langList}">
         <table class="tg">
             <tr>
-                <th width="80">ID</th>
+                <th width="60">ID</th>
                 <th width="120">Name</th>
+                <th width="60">Edit</th>
+                <th width="60">Delete</th>
             </tr>
             <c:forEach items="${langList}" var="lang">
                 <tr>
                     <td>${lang.id}</td>
                     <td>${lang.name}</td>
+                    <td><a href="<c:url value='/admin/editlang/${lang.id}' />">Edit</a></td>
+                    <td><a href="<c:url value='/admin/removelang/${lang.id}' />">Delete</a></td>
                 </tr>
             </c:forEach>
         </table>
     </c:if>
-        
-    
     
     <h3>Language editor</h3>
-    <c:url var="addAction" value="/langs/add"/>
+    <c:url var="addAction" value="/admin/langs/add"/>
     <form:form action="${addAction}" commandName="language">
     <table>
         <c:if test="${!empty language.name}">
@@ -182,6 +182,29 @@
         </tr>
     </table>
     </form:form>
+    
+    <h3>Users list</h3>
+    <c:if test="${!empty susersList}">
+        <table class="tg">
+            <tr>
+                <th width="120">Username</th>
+                
+                <th width="60">Edit</th>
+                <th width="60">Delete</th>
+            </tr>
+            <c:forEach items="${susersList}" var="suser">
+                <tr>
+                    <td>${suser.userName}</td>
+                    
+                    <td><a href="<c:url value='/admin/edituser/${suser.userName}' />">Edit</a></td>
+                    <td><a href="<c:url value='/admin/removeuser/${suser.userName}' />">Delete</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    
+    <h3>User editor</h3>
+    <p>Coming soon...</p>
     
     </body>
 </html>

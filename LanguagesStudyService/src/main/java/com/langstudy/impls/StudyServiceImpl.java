@@ -155,4 +155,16 @@ public class StudyServiceImpl implements StudyService {
     public User getUser(String userName) {
         return this.userDao.getUser(userName);
     }
+
+    @Override
+    @Transactional
+    public void deleteLang(Lang lang) {
+        this.langDao.deleteLang(lang);
+    }
+
+    @Override
+    @Transactional
+    public void editLang(Lang lang) {
+        this.langDao.editLang(lang);
+    }
 }

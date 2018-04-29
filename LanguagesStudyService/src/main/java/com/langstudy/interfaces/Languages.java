@@ -11,5 +11,7 @@ import java.util.List;
 public interface Languages {
     List<Lang> getLangs();
     void addLang(Lang lang);
+    public void deleteLang(Lang lang);
+    public void editLang(Lang lang);
     public Lang getLang(int langId);
 }

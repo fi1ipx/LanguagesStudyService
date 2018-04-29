@@ -45,4 +45,16 @@ public class LangDaoImpl implements LangDao {
         Lang word = (Lang) session.load(Lang.class, new Integer(langId));
         return word;
     }
+
+    @Override
+    public void deleteLang(Lang lang) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.delete(lang);
+    }
+
+    @Override
+    public void editLang(Lang lang) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(lang);
+    }
 }

@@ -31,33 +31,48 @@ public class DefaultController {
         this.studyService = wsi;
     }
     
-   @RequestMapping(value = "/admin", method = RequestMethod.GET)
-   public String index(ModelMap map) {
-       map.addAttribute("editorword", new Word());
-       map.addAttribute("language", new Lang());
-       map.addAttribute("getWords", this.studyService.getWords());
-       map.addAttribute("langList", this.studyService.getLangs());
-//       map.addAttribute("usersList", this.studyService.getUsers());
-       map.addAttribute("lang", new Lang());
-       map.put("msg", "Hello Spring 4 Web MVC!");
-       return "admin";
-   }
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String index(ModelMap map) {
+        map.addAttribute("editorword", new Word());
+        map.addAttribute("language", new Lang());
+        map.addAttribute("getWords", this.studyService.getWords());
+        map.addAttribute("langList", this.studyService.getLangs());
+        map.addAttribute("susersList", this.studyService.getUsers());
+        map.addAttribute("lang", new Lang());
+        return "admin";
+    }
    
-   @RequestMapping("/admin/remove/{id}")
+    @RequestMapping("/admin/remove/{id}")
     public String removeWord(@PathVariable("id") int id) {
         this.studyService.deleteWord(this.studyService.getWord(id));
-
-        return "redirect:/";
+        return "redirect:/admin";
+    }
+    
+    @RequestMapping("/admin/removelang/{id}")
+    public String removeLang(@PathVariable("id") int id) {
+        this.studyService.deleteLang(this.studyService.getLang(id));
+        return "redirect:/admin";
     }
     
     @RequestMapping("/admin/edit/{id}")
     public String editWord(@PathVariable("id") int id, ModelMap map) {
-       map.addAttribute("editorword", this.studyService.getWord(id));
-       map.addAttribute("language", new Lang());
-       map.addAttribute("getWords", this.studyService.getWords());
-       map.addAttribute("langList", this.studyService.getLangs());
-//       map.addAttribute("usersList", this.studyService.getUsers());
-       map.addAttribute("lang", new Lang());
+        map.addAttribute("editorword", this.studyService.getWord(id));
+        map.addAttribute("language", new Lang());
+        map.addAttribute("getWords", this.studyService.getWords());
+        map.addAttribute("langList", this.studyService.getLangs());
+        map.addAttribute("susersList", this.studyService.getUsers());
+        map.addAttribute("lang", new Lang());
+        return "admin";
+    }
+    
+    @RequestMapping("/admin/editlang/{id}")
+    public String editLang(@PathVariable("id") int id, ModelMap map) {
+        map.addAttribute("editorword", new Word());
+        map.addAttribute("language", this.studyService.getLang(id));
+        map.addAttribute("getWords", this.studyService.getWords());
+        map.addAttribute("langList", this.studyService.getLangs());
+        map.addAttribute("susersList", this.studyService.getUsers());
+        map.addAttribute("lang", new Lang());
         return "admin";
     }
     
@@ -69,13 +84,15 @@ public class DefaultController {
             this.studyService.addWord(editorword);
         else
             this.studyService.editWord(editorword);
-        
         return "redirect:/admin";
     }
     
     @RequestMapping(value = "/admin/langs/add", method = RequestMethod.POST)
     public String addLang(@ModelAttribute("language") Lang language) {
-        this.studyService.addLang(language);
+        if (language.getId() == 0)
+            this.studyService.addLang(language);
+        else
+            this.studyService.editLang(language);
         return "redirect:/admin";
     }
     

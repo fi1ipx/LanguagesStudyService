@@ -12,5 +12,7 @@ import java.util.List;
 public interface LangDao {
     public List<Lang> getLangs();
     public void addLang(Lang lang);
+    public void deleteLang(Lang lang);
+    public void editLang(Lang lang);
     public Lang getLang(int langId);
 }
