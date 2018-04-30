@@ -11,10 +11,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-    <c:if test="${not empty error}">
+    <c:if test="${!empty error}">
         ${error}
     </c:if>
-
+    
     <form name='form_signup' action="register" method='POST'>
         <table>
             <tr>

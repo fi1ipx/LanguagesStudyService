@@ -11,8 +11,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <p>${email}</p>
-        <p>${password}</p>
-        <p>${confirm}</p>
+        <p>${email} was successfully registred. <a href="<c:url value='/login' />">Login</a></p>
     </body>
 </html>

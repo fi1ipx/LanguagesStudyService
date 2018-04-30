@@ -9,6 +9,7 @@ import com.langstudy.dao.LangDao;
 import com.langstudy.dao.UserDao;
 import com.langstudy.dao.WordDao;
 import com.langstudy.interfaces.StudyService;
+import com.langstudy.objects.GroupMember;
 import com.langstudy.objects.Lang;
 import com.langstudy.objects.User;
 import com.langstudy.objects.Word;
@@ -154,5 +155,23 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public void editLang(Lang lang) {
         this.langDao.editLang(lang);
+    }
+
+    @Override
+    @Transactional
+    public void addGroupMember(GroupMember groupMember) {
+        this.userDao.addGroupMember(groupMember);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(User user) {
+        this.userDao.deleteUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void editUser(User user) {
+        this.userDao.editUser(user);
     }
 }

@@ -62,4 +62,11 @@ Contributor(s):
     <property column="password" name="password"/>
     <property column="enabled" name="enabled"/>
   </class>
+  <class name="com.langstudy.objects.GroupMember" table="group_members">
+    <id column="id" name="id">
+      <generator class="identity"/>
+    </id>
+    <property column="username" name="userName"/>
+    <property column="group_id" name="groupId"/>
+  </class>
 </hibernate-mapping>

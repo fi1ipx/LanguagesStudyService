@@ -5,6 +5,7 @@
  */
 package com.langstudy.controllers;
 
+import com.langstudy.dao.WordDaoImpl;
 import com.langstudy.impls.StudyServiceImpl;
 import com.langstudy.interfaces.StudyService;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.langstudy.objects.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import org.hibernate.ObjectNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
@@ -24,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class DefaultController {
+    private static final Logger logger = LoggerFactory.getLogger(WordDaoImpl.class);
     private StudyService studyService;
 
     @Autowired(required = true)
@@ -140,6 +147,32 @@ public class DefaultController {
         // if e-mail and password correct send user activation e-mail
         // if password incorrect, send user error 
         if (userEmail.length() > 0 && password.length() > 0 &&  passwordConfirm.length() > 0) {
+            try {
+                InternetAddress internetAddress = new InternetAddress(userEmail);
+                internetAddress.validate();
+            } catch (AddressException e) {
+                map.put("error", "Email is not valid");
+                return "signup";
+            }
+            // Try to find user with the same name
+            boolean newUser = false;
+            try {
+                User fUser = this.studyService.getUser(userEmail);
+                fUser.isEnabled();
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                newUser = true;
+            }
+            if (!newUser) {
+                map.put("error", "This e-mail alredy registred");
+                return "signup";
+            } else {
+                logger.info("This email not registred");
+            }
+            if (!password.equals(passwordConfirm)) {
+                map.put("error", "Passwords doesn't match");
+                return "signup";
+            }
             User user = new User();
             user.setUserName(userEmail);
             user.setEnabled(true);
@@ -147,12 +180,16 @@ public class DefaultController {
             password = passwordEncoder.encode(password);
             user.setPassword(password);
             this.studyService.addUser(user);
+            GroupMember groupMember = new GroupMember();
+            groupMember.setGroupId(1);
+            groupMember.setUserName(userEmail);
+            this.studyService.addGroupMember(groupMember);
             map.put("email", userEmail);
-            map.put("password", password);
-            map.put("confirm", passwordConfirm);
             return "checkmail";
         }
-        else
+        else {
+            map.put("error", "Enter valid e-mail, password and password confirmation.");
             return "signup";
+        }
     }
 }

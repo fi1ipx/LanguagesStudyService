@@ -5,12 +5,14 @@
  */
 package com.langstudy.dao;
 
+import com.langstudy.objects.GroupMember;
 import com.langstudy.objects.User;
 import java.util.List;
 
 public interface UserDao {
     public List<User> getUsers();
     public void addUser(User user);
+    public void addGroupMember(GroupMember groupMember);
     public void deleteUser(User user);
     public void editUser(User user);
     public User getUser(String userName);

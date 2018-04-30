@@ -5,6 +5,7 @@
  */
 package com.langstudy.dao;
 
+import com.langstudy.objects.GroupMember;
 import com.langstudy.objects.User;
 import java.util.List;
 import org.hibernate.Session;
@@ -36,6 +37,12 @@ public class UserDaoImpl implements UserDao{
     public void addUser(User user) {
         Session session = this.sessionFactory.getCurrentSession();
         session.persist(user);
+    }
+    
+    @Override
+    public void addGroupMember(GroupMember groupMember) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(groupMember);
     }
 
     @Override
