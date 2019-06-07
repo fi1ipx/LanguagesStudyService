@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface WordRepository extends JpaRepository<Word, Long> {
     List<Word> findAll();
     Optional<Word> findByName(String name);
+//    Word findOne(Long id);
 }

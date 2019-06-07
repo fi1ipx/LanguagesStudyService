@@ -1,6 +1,7 @@
 package com.fi1.langstudy.controller;
 
-import com.fi1.langstudy.model.WordList;
+import com.fi1.langstudy.model.ModelExample;
+import com.fi1.langstudy.model.ModelWordList;
 import com.fi1.langstudy.object.Example;
 import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.service.WordService;
@@ -35,13 +36,13 @@ public class WordController {
     }
 
     @PostMapping({"/example/", "/example"})
-    public ResponseEntity<Object> createExample(@RequestBody final Example example) {
-        return new ResponseEntity<>(wordService.createExample(example), HttpStatus.OK);
+    public Boolean createExample(@RequestBody final ModelExample modelExample) {
+        return wordService.createExample(modelExample);
     }
 
     @PostMapping(value = {"/create-word-list/", "/create-word-list"})
-    public ResponseEntity<Object> createWordList(@RequestBody final WordList wordList) {
-        return new ResponseEntity<>(wordService.createList(wordList), HttpStatus.OK);
+    public ResponseEntity<Object> createWordList(@RequestBody final ModelWordList modelWordList) {
+        return new ResponseEntity<>(wordService.createList(modelWordList), HttpStatus.OK);
     }
 
     @Autowired

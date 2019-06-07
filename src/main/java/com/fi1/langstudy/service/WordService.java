@@ -1,7 +1,8 @@
 package com.fi1.langstudy.service;
 
 import com.fi1.langstudy.component.WordConverterAndValidatorComponent;
-import com.fi1.langstudy.model.WordList;
+import com.fi1.langstudy.model.ModelExample;
+import com.fi1.langstudy.model.ModelWordList;
 import com.fi1.langstudy.object.Example;
 import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.repository.ExampleRepository;
@@ -28,14 +29,18 @@ public class WordService {
         return exampleRepository.findAllByWordId(wordId);
     }
 
-    public boolean createList(WordList wordList) {
-        wordRepository.saveAll(wordConverterAndValidatorComponent.pullWordList(wordList));
+    public boolean createList(ModelWordList modelWordList) {
+        wordRepository.saveAll(wordConverterAndValidatorComponent.pullWordList(modelWordList));
         return true;
     }
 
-    public Example createExample(Example example) {
+    public boolean createExample(ModelExample modelExample) {
+        Example example = new Example();
+        example.setText(modelExample.getText());
+        example.setWord(wordRepository.getOne(modelExample.getWordId()));
         example.setCreatedAt(Timestamp.from(Instant.now()));
-        return exampleRepository.save(example);
+        exampleRepository.save(example);
+        return true;
     }
 
     @Autowired

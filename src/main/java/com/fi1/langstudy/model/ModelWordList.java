@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class WordList {
+public class ModelWordList {
     private String words;
 
 }

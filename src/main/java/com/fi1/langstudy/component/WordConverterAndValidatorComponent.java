@@ -1,6 +1,6 @@
 package com.fi1.langstudy.component;
 
-import com.fi1.langstudy.model.WordList;
+import com.fi1.langstudy.model.ModelWordList;
 import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class WordConverterAndValidatorComponent {
 
     private WordRepository wordRepository;
 
-    public List<Word> pullWordList(WordList wordList) {
+    public List<Word> pullWordList(ModelWordList modelWordList) {
         Timestamp now = Timestamp.from(Instant.now());
         return Collections
-                .list(new StringTokenizer(wordList.getWords(), "\n"))
+                .list(new StringTokenizer(modelWordList.getWords(), "\n"))
                 .stream().map(token -> {
                     String wordName = (String) token;
                     if (wordRepository.findByName(wordName).isEmpty()) {
