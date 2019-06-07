@@ -5,6 +5,7 @@ import com.fi1.langstudy.repository.ExampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -13,7 +14,9 @@ public class ExampleService {
     private ExampleRepository exampleRepository;
 
     public List<Example> findAll() {
-        return exampleRepository.findAll();
+        List<Example> examples = exampleRepository.findAll();
+        Collections.reverse(examples);
+        return examples;
     }
 
     @Autowired

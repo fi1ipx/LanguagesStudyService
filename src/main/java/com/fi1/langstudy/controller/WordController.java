@@ -36,8 +36,8 @@ public class WordController {
     }
 
     @PostMapping({"/example/", "/example"})
-    public Boolean createExample(@RequestBody final ModelExample modelExample) {
-        return wordService.createExample(modelExample);
+    public ResponseEntity<Object> createExample(@RequestBody final ModelExample modelExample) {
+        return new ResponseEntity<>(wordService.createExample(modelExample), HttpStatus.OK);
     }
 
     @PostMapping(value = {"/create-word-list/", "/create-word-list"})

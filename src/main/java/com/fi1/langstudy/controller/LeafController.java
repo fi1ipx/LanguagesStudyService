@@ -8,6 +8,11 @@ public class LeafController {
 
     @GetMapping("/")
     public String main() {
-        return "index"; //view
+        return "index";
+    }
+
+    @GetMapping("/example")
+    public String example() {
+        return "example";
     }
 }
