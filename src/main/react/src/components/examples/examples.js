@@ -47,7 +47,13 @@ export default class Examples extends React.Component {
 
                                 return <tr key={item.id}>
                                     <th scope="row">{key+1}</th>
-                                    <td>{item.word}</td>
+                                    <td>
+                                        <a
+                                            rel="noopener noreferrer" target="_blank"
+                                            href={'/practice/' + item.wordId}>
+                                            {item.word}
+                                        </a>
+                                    </td>
                                     <td>{item.text}</td>
                                     <td><DictionaryLinks word={item.word}/></td>
                                     <td>{item.createdAt}</td>

@@ -1,9 +1,12 @@
 import React from 'react';
+import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 
 export default class Examples extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            word: '',
+            wordCreatedAt: '',
             wordId: Number(props.match.params.id),
             examples: [],
             exampleToAdd: '',
@@ -11,15 +14,19 @@ export default class Examples extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchExamples();
+        this.fetchTheWord();
     }
 
-    fetchExamples() {
+    fetchTheWord() {
         const that = this;
-        fetch('/api/word/' + this.state.wordId + '/examples')
+        fetch('/api/word/' + this.state.wordId)
             .then((response) => response.json())
             .then(function (data) {
-                that.setState({examples: data});
+                that.setState({
+                    examples: data.examples,
+                    word: data.name,
+                    wordCreatedAt: data.createdAt,
+                });
             })
     }
 
@@ -57,6 +64,8 @@ export default class Examples extends React.Component {
         const {examples} = this.state;
         return (
             <div id="test" className="container">
+                <h2>{this.state.word} [added {this.state.wordCreatedAt}]</h2>
+                <DictionaryLinks word={this.state.word} />
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="exampleTextarea">Type example here</label>
@@ -74,6 +83,8 @@ export default class Examples extends React.Component {
                             examples ?
                                 examples.map((item, key) => {
                                     return <li className="list-group-item" key={key}>
+                                        [{item.createdAt}]
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         {item.text}
                                     </li>
                                 })

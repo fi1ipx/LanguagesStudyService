@@ -15,6 +15,8 @@ public class ModelForListExample {
 
     private String word;
 
+    private Long wordId;
+
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp wordCreatedAt;
 

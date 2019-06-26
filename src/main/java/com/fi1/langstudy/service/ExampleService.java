@@ -26,6 +26,7 @@ public class ExampleService {
     private ModelForListExample convertExample(Example example) {
         ModelForListExample model = new ModelForListExample();
         model.setId(example.getId());
+        model.setWordId(example.getWord().getId());
         model.setCreatedAt(example.getCreatedAt());
         model.setText(example.getText());
         model.setWord(example.getWord().getName());

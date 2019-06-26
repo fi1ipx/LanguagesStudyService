@@ -35,6 +35,11 @@ public class WordController {
         return wordService.findExamples(wordId);
     }
 
+    @GetMapping({"/{id}/", "/{id}"})
+    public Word findById(@PathVariable("id") final Long wordId) {
+        return wordService.findById(wordId);
+    }
+
     @PostMapping({"/example/", "/example"})
     public ResponseEntity<Object> createExample(@RequestBody final ModelExample modelExample) {
         return new ResponseEntity<>(wordService.createExample(modelExample), HttpStatus.OK);

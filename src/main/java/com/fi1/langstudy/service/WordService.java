@@ -43,6 +43,10 @@ public class WordService {
         return true;
     }
 
+    public Word findById(Long id) {
+        return wordRepository.findById(id).orElseThrow();
+    }
+
     @Autowired
     public void setWordRepository(WordRepository wordRepository) {
         this.wordRepository = wordRepository;

@@ -89,7 +89,13 @@ export default class Words extends React.Component {
                                     <td>{item.examples.length}</td>
                                     <td>{lastPractice}</td>
                                     <td><DictionaryLinks word={item.name} /></td>
-                                    <td><a href={'/practice/' + item.id}>Practice</a></td>
+                                    <td>
+                                        <a
+                                            rel="noopener noreferrer" target="_blank"
+                                            href={'/practice/' + item.id}>
+                                            Practice
+                                        </a>
+                                    </td>
                                     <td>{item.name}</td>
                                 </tr>
                             })
