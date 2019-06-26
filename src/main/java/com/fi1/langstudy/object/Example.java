@@ -1,10 +1,9 @@
 package com.fi1.langstudy.object;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,9 +16,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(schema = "study")
-@Data
-@ToString
-@EqualsAndHashCode
 public class Example {
     @Id
     @Column
@@ -30,10 +26,43 @@ public class Example {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdAt;
 
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name = "word_id")
     private Word word;
 
     @Column
     private String text;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Word getWord() {
+        return word;
+    }
+
+    public void setWord(Word word) {
+        this.word = word;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

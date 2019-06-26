@@ -1,6 +1,6 @@
 package com.fi1.langstudy.controller;
 
-import com.fi1.langstudy.object.Example;
+import com.fi1.langstudy.model.ModelForListExample;
 import com.fi1.langstudy.service.ExampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +18,7 @@ public class ExampleController {
     private ExampleService exampleService;
 
     @GetMapping(value = {"/", ""})
-    public List<Example> findAll() {
+    public List<ModelForListExample> findAll() {
         return exampleService.findAll();
     }
 
