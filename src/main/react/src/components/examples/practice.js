@@ -19,7 +19,8 @@ export default class Examples extends React.Component {
 
     fetchTheWord() {
         const that = this;
-        fetch('/api/word/' + this.state.wordId)
+        const serviceUrl = '';
+        fetch(`${serviceUrl}/api/word/${this.state.wordId}`)
             .then((response) => response.json())
             .then(function (data) {
                 that.setState({
@@ -35,7 +36,8 @@ export default class Examples extends React.Component {
     };
 
     handleSubmit = (e) => {
-        fetch('/api/word/example', {
+        const serviceUrl = '';
+        fetch(`${serviceUrl}/api/word/example`, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -54,7 +56,7 @@ export default class Examples extends React.Component {
         })
             .then(() => {
                 this.setState({exampleToAdd: ''});
-                this.fetchExamples();
+                this.fetchTheWord();
             })
             .catch(err => console.log(err));
         e.preventDefault();

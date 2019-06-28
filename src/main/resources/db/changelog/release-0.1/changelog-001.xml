@@ -15,4 +15,8 @@
         <sqlFile path="create-example-table.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="group" author="fi1">
+        <sqlFile path="create-group-tables.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>
