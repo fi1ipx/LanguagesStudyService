@@ -13,7 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll() // These urls are allowed by any authenticated user
+                .antMatchers("/**").authenticated() // These urls are allowed by any authenticated user
                 .and()
                 .httpBasic();
         http.csrf().disable();
