@@ -35,7 +35,7 @@ public class WordService {
     }
 
     public boolean createExample(ModelExample modelExample) {
-        Example example = new Example();
+        final Example example = new Example();
         example.setText(modelExample.getText());
         example.setWord(wordRepository.getOne(modelExample.getWordId()));
         example.setCreatedAt(Timestamp.from(Instant.now()));
@@ -45,6 +45,11 @@ public class WordService {
 
     public Word findById(Long id) {
         return wordRepository.findById(id).orElseThrow();
+    }
+
+    public boolean delete(Long wordId) {
+        // TODO
+        return true;
     }
 
     @Autowired

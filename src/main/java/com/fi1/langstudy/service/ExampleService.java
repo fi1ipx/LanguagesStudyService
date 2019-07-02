@@ -16,15 +16,15 @@ public class ExampleService {
     private ExampleRepository exampleRepository;
 
     public List<ModelForListExample> findAll() {
-        List<ModelForListExample> modelForListExamples = new ArrayList<>();
-        List<Example> examples = exampleRepository.findAll();
+        final List<ModelForListExample> modelForListExamples = new ArrayList<>();
+        final List<Example> examples = exampleRepository.findAll();
         Collections.reverse(examples);
         examples.forEach(v -> modelForListExamples.add(this.convertExample(v)));
         return modelForListExamples;
     }
 
     private ModelForListExample convertExample(Example example) {
-        ModelForListExample model = new ModelForListExample();
+        final ModelForListExample model = new ModelForListExample();
         model.setId(example.getId());
         model.setWordId(example.getWord().getId());
         model.setCreatedAt(example.getCreatedAt());

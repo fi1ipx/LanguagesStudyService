@@ -35,7 +35,7 @@ public class GroupService {
     }
 
     public boolean createGroup(ModelGroup modelGroup) {
-        Group group = new Group();
+        final Group group = new Group();
         group.setCreatedAt(Timestamp.from(Instant.now()));
         group.setName(modelGroup.getName());
         groupRepository.save(group);
@@ -43,15 +43,13 @@ public class GroupService {
     }
 
     public boolean addMembersToGroup(ModelMemberGroup modelMemberGroup) {
-        System.out.println("modelMemberGroup");
-        System.out.println(modelMemberGroup);
         modelMemberGroup.getWordIds().forEach(wordId -> saveGroupMember(wordId, modelMemberGroup.getGroupId()));
         return true;
     }
 
     private void saveGroupMember(Long wordId, Long groupId) {
-        GroupMemberId groupMemberId = new GroupMemberId(groupId, wordId);
-        GroupMember groupMember = new GroupMember(groupMemberId);
+        final GroupMemberId groupMemberId = new GroupMemberId(groupId, wordId);
+        final GroupMember groupMember = new GroupMember(groupMemberId);
         groupMemberRepository.save(groupMember);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String MATCH = "/**";
     @Value("${langstudy.security.enabled:true}")
     private boolean securityEnabled;
 
@@ -18,13 +19,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         if (securityEnabled) {
             http
                     .authorizeRequests()
-                    .antMatchers("/**").authenticated() // These urls are allowed by any authenticated user
+                    .antMatchers(MATCH).authenticated() // These urls are allowed by any authenticated user
                     .and()
                     .httpBasic();
         } else {
             http
                     .authorizeRequests()
-                    .antMatchers("/**").permitAll() // These urls are allowed by any authenticated user
+                    .antMatchers(MATCH).permitAll() // These urls are allowed by any authenticated user
                     .and()
                     .httpBasic();
             http.csrf().disable();

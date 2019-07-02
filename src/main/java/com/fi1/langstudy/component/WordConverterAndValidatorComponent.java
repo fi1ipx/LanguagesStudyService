@@ -19,13 +19,13 @@ public class WordConverterAndValidatorComponent {
     private WordRepository wordRepository;
 
     public List<Word> pullWordList(ModelWordList modelWordList) {
-        Timestamp now = Timestamp.from(Instant.now());
+        final Timestamp now = Timestamp.from(Instant.now());
         return Collections
                 .list(new StringTokenizer(modelWordList.getWords(), "\n"))
                 .stream().map(token -> {
-                    String wordName = (String) token;
+                    final String wordName = (String) token;
                     if (wordRepository.findByName(wordName).isEmpty()) {
-                        Word word = new Word();
+                        final Word word = new Word();
                         word.setCreatedAt(now);
                         word.setName(wordName);
                         return word;
