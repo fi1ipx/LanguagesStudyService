@@ -22,8 +22,7 @@ export default class Words extends React.Component {
     }
 
     fetchWords() {
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/word`)
+        fetch(`${window.rest.apiUrl}/api/word`)
             .then((resp) => resp.json())
             .then((data) => {
                 this.setState({words: data})
@@ -31,8 +30,7 @@ export default class Words extends React.Component {
     }
 
     fetchGroups() {
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/group`)
+        fetch(`${window.rest.apiUrl}/api/group`)
             .then((resp) => resp.json())
             .then((data) => {
                 this.setState({groups: data})
@@ -59,8 +57,7 @@ export default class Words extends React.Component {
     };
 
     handleSubmit = (e) => {
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/word/create-word-list`, {
+        fetch(`${window.rest.apiUrl}/api/word/create-word-list`, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -81,8 +78,7 @@ export default class Words extends React.Component {
     };
 
     handleAddToTheGroup = (e) => {
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/group/add-group-members`, {
+        fetch(`${window.rest.apiUrl}/api/group/add-group-members`, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -145,7 +141,17 @@ export default class Words extends React.Component {
                                     <th scope="row">{key + 1}</th>
                                     <td>{item.name}</td>
                                     <td>{item.createdAt}</td>
-                                    <td>{item.examples.length}</td>
+                                    <td>
+                                        <div data-toggle="tooltip"
+                                             data-placement="top"
+                                             title={
+                                                 item.examples.map(function(el){
+                                                     return el.text;
+                                                 }).join('\n')}
+                                        >
+                                            {item.examples.length}
+                                        </div>
+                                    </td>
                                     <td>{lastPractice}</td>
                                     <td><DictionaryLinks word={item.name}/></td>
                                     <td>

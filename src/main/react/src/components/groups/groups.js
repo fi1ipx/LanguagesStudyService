@@ -20,8 +20,7 @@ export default class Groups extends React.Component {
     }
 
     fetchGroups() {
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/group`)
+        fetch(`${window.rest.apiUrl}/api/group`)
             .then((resp) => resp.json())
             .then((data) => {
                 this.setState({groups: data})
@@ -31,8 +30,7 @@ export default class Groups extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         if (this.state.newGroupName.length > 0) {
-            const serviceUrl = '';
-            fetch(`${serviceUrl}/api/group`, {
+            fetch(`${window.rest.apiUrl}/api/group`, {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache',

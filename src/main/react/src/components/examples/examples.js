@@ -16,8 +16,7 @@ export default class Examples extends React.Component {
     fetchExamples() {
         console.log(this);
         const that = this;
-        const serviceUrl = '';
-        fetch(`${serviceUrl}/api/example`)
+        fetch(`${window.rest.apiUrl}/api/example`)
             .then((resp) => resp.json())
             .then(function (data) {
                 that.setState({examples: data});
