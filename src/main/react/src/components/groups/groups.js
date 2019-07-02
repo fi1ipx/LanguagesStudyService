@@ -60,7 +60,6 @@ export default class Groups extends React.Component {
 
     handleGroupClick = (e, key) => {
         e.preventDefault();
-        console.log("handleGroupClick", key);
         const selectedGroup = this.state.groups[key];
         this.setState({words: this.state.groups[key].words, selectedGroup: selectedGroup});
     };
@@ -89,10 +88,10 @@ export default class Groups extends React.Component {
                     {
                         groups ?
                             groups.map((item, key) => {
-                                return <li>
+                                return <li key={item.id}>
                                     [{item.createdAt}]
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="#" onClick={(e) => this.handleGroupClick(e, key)} key={key}>
+                                    <a href={item.id} onClick={(e) => this.handleGroupClick(e, key)} key={key}>
                                         {item.name}
                                     </a>
                                 </li>
@@ -132,9 +131,9 @@ export default class Groups extends React.Component {
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="#">Del</a>
+                                                <a href={item.id} onClick={e => {e.preventDefault()}}>Del</a>
                                                 &nbsp;|&nbsp;
-                                                <a href="#">Edit</a>
+                                                <a href={item.id} onClick={e => {e.preventDefault()}}>Edit</a>
                                             </td>
                                         </tr>
                                     })

@@ -12,7 +12,7 @@ export default class Words extends React.Component {
             selectedWords: [],
             wordsToAdd: '',
             showAddWordsToGroup: false,
-            selectedGroupId: null,
+            selectedGroupId: undefined,
         }
     }
 
@@ -164,9 +164,9 @@ export default class Words extends React.Component {
                                     <td>
                                         <input value={item.id} type="checkbox" onChange={this.handleCheckBoxSelect}/>
                                         &nbsp;|&nbsp;
-                                        <a href="#">Del</a>
+                                        <a href={item.id} onClick={e => {e.preventDefault()}}>Del</a>
                                         &nbsp;|&nbsp;
-                                        <a href="#">Edit</a>
+                                        <a href={item.id} onClick={e => {e.preventDefault()}}>Edit</a>
                                     </td>
                                 </tr>
                             })
