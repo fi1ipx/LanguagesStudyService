@@ -1,6 +1,7 @@
 import React from 'react';
 import TableHeader from "./tableHeader";
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
+import Loader from "../loader/loader";
 
 export default class Words extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ export default class Words extends React.Component {
             wordsToAdd: '',
             showAddWordsToGroup: false,
             selectedGroupId: undefined,
+            isLoading: true,
         }
     }
 
@@ -22,10 +24,11 @@ export default class Words extends React.Component {
     }
 
     fetchWords() {
+        this.setState({isLoading: true});
         fetch(`${window.rest.apiUrl}/api/word`)
             .then((resp) => resp.json())
             .then((data) => {
-                this.setState({words: data})
+                this.setState({words: data, isLoading: false})
             })
     }
 
@@ -104,7 +107,7 @@ export default class Words extends React.Component {
     };
 
     render() {
-        const {words, showAddWordsToGroup, groups} = this.state;
+        const {words, showAddWordsToGroup, groups, isLoading} = this.state;
         const addToGroupVisible = showAddWordsToGroup ? 'block' : 'none';
 
         return (
@@ -125,56 +128,64 @@ export default class Words extends React.Component {
                     </button>
                 </form>
                 <br/>
-                <table className="table table-striped">
-                    <TableHeader/>
-                    <tbody id="tbody">
-                    {
-                        words ?
-                            words.map((item, key) => {
-                                let lastPractice;
-                                if (item.examples.length > 0) {
-                                    lastPractice = item.examples[item.examples.length - 1].createdAt
-                                } else {
-                                    lastPractice = 'never';
-                                }
-                                return <tr key={item.id}>
-                                    <th scope="row">{key + 1}</th>
-                                    <td>{item.name}</td>
-                                    <td>{item.createdAt}</td>
-                                    <td>
-                                        <div data-toggle="tooltip"
-                                             data-placement="top"
-                                             title={
-                                                 item.examples.map(function(el){
-                                                     return el.text;
-                                                 }).join('\n')}
-                                        >
-                                            {item.examples.length}
-                                        </div>
-                                    </td>
-                                    <td>{lastPractice}</td>
-                                    <td><DictionaryLinks word={item.name}/></td>
-                                    <td>
-                                        <a
-                                            rel="noopener noreferrer" target="_blank"
-                                            href={'/practice/' + item.id}>
-                                            Practice
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <input value={item.id} type="checkbox" onChange={this.handleCheckBoxSelect}/>
-                                        &nbsp;|&nbsp;
-                                        <a href={item.id} onClick={e => {e.preventDefault()}}>Del</a>
-                                        &nbsp;|&nbsp;
-                                        <a href={item.id} onClick={e => {e.preventDefault()}}>Edit</a>
-                                    </td>
-                                </tr>
-                            })
-                            :
-                            null
-                    }
-                    </tbody>
-                </table>
+                {
+                    isLoading ? <Loader/> :
+                    <table className="table table-striped">
+                        <TableHeader/>
+                        <tbody id="tbody">
+                        {
+                            words ?
+                                words.map((item, key) => {
+                                    let lastPractice;
+                                    if (item.examples.length > 0) {
+                                        lastPractice = item.examples[item.examples.length - 1].createdAt
+                                    } else {
+                                        lastPractice = 'never';
+                                    }
+                                    return <tr key={item.id}>
+                                        <th scope="row">{key + 1}</th>
+                                        <td>{item.name}</td>
+                                        <td>{item.createdAt}</td>
+                                        <td>
+                                            <div data-toggle="tooltip"
+                                                 data-placement="top"
+                                                 title={
+                                                     item.examples.map(function (el) {
+                                                         return el.text;
+                                                     }).join('\n')}
+                                            >
+                                                {item.examples.length}
+                                            </div>
+                                        </td>
+                                        <td>{lastPractice}</td>
+                                        <td><DictionaryLinks word={item.name}/></td>
+                                        <td>
+                                            <a
+                                                rel="noopener noreferrer" target="_blank"
+                                                href={'/practice/' + item.id}>
+                                                Practice
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <input value={item.id} type="checkbox"
+                                                   onChange={this.handleCheckBoxSelect}/>
+                                            &nbsp;|&nbsp;
+                                            <a href={item.id} onClick={e => {
+                                                e.preventDefault()
+                                            }}>Del</a>
+                                            &nbsp;|&nbsp;
+                                            <a href={item.id} onClick={e => {
+                                                e.preventDefault()
+                                            }}>Edit</a>
+                                        </td>
+                                    </tr>
+                                })
+                                :
+                                null
+                        }
+                        </tbody>
+                    </table>
+                }
                 <br/>
                 <div className="form-group" style={{display: addToGroupVisible}}>
                     <label htmlFor="newWordsTextarea">Select a word group&nbsp;</label>
