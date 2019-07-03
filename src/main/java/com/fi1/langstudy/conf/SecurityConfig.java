@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(MATCH).authenticated() // These urls are allowed by any authenticated user
                     .and()
                     .httpBasic();
+            http.csrf().disable();
         } else {
             http
                     .authorizeRequests()
