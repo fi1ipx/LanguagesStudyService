@@ -106,6 +106,20 @@ export default class Words extends React.Component {
         this.setState({selectedGroupId: e.target.value});
     };
 
+    deleteWord = (e, wordId) => {
+        e.preventDefault();
+        fetch(`${window.rest.apiUrl}/api/word/${wordId}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+        })
+            .then(() => {
+                this.fetchWords();
+            })
+            .catch(err => console.log(err));
+    };
+
     render() {
         const {words, showAddWordsToGroup, groups, isLoading} = this.state;
         const addToGroupVisible = showAddWordsToGroup ? 'block' : 'none';
@@ -170,8 +184,8 @@ export default class Words extends React.Component {
                                             <input value={item.id} type="checkbox"
                                                    onChange={this.handleCheckBoxSelect}/>
                                             &nbsp;|&nbsp;
-                                            <a href={item.id} onClick={e => {
-                                                e.preventDefault()
+                                            <a href={"delete/" + item.id} onClick={e => {
+                                                this.deleteWord(e, item.id)
                                             }}>Del</a>
                                             &nbsp;|&nbsp;
                                             <a href={item.id} onClick={e => {

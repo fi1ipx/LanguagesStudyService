@@ -10,6 +10,7 @@ import com.fi1.langstudy.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -47,9 +48,9 @@ public class WordService {
         return wordRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public boolean delete(Long wordId) {
-        // TODO
-        return true;
+        return wordRepository.deleteWordById(wordId);
     }
 
     @Autowired

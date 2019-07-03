@@ -64,6 +64,21 @@ export default class Groups extends React.Component {
         this.setState({words: this.state.groups[key].words, selectedGroup: selectedGroup});
     };
 
+    deleteGroup = (e, id) => {
+        e.preventDefault();
+        e.preventDefault();
+        fetch(`${window.rest.apiUrl}/api/group/${id}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+        })
+            .then(() => {
+                this.fetchGroups()
+            })
+            .catch(err => console.log(err));
+    };
+
     render() {
         const {groups, words, selectedGroup} = this.state;
 
@@ -89,6 +104,9 @@ export default class Groups extends React.Component {
                         groups ?
                             groups.map((item, key) => {
                                 return <li key={item.id}>
+                                    <a href={"delete/" + item.id} onClick={e => {
+                                        this.deleteGroup(e, item.id)
+                                    }}>Del</a>
                                     [{item.createdAt}]
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href={item.id} onClick={(e) => this.handleGroupClick(e, key)} key={key}>

@@ -25,6 +25,20 @@ export default class Examples extends React.Component {
             })
     }
 
+    deleteExample = (e, id) => {
+        e.preventDefault();
+        fetch(`${window.rest.apiUrl}/api/example/${id}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+        })
+            .then(() => {
+                this.fetchExamples();
+            })
+            .catch(err => console.log(err));
+    };
+
     render() {
         const {examples, isLoading} = this.state;
 
@@ -41,6 +55,7 @@ export default class Examples extends React.Component {
                                 <th scope="col">Dictionaries</th>
                                 <th scope="col">Example date</th>
                                 <th scope="col">Word date</th>
+                                <th scope="col">Manage</th>
                             </tr>
                             </thead>
                             <tbody id="tbody">
@@ -61,6 +76,11 @@ export default class Examples extends React.Component {
                                             <td><DictionaryLinks word={item.word}/></td>
                                             <td>{item.createdAt}</td>
                                             <td>{item.wordCreatedAt}</td>
+                                            <td>
+                                                <a href={"delete/" + item.id} onClick={e => {
+                                                    this.deleteExample(e, item.id)
+                                                }}>Del</a>
+                                            </td>
                                         </tr>
                                     })
                                     :

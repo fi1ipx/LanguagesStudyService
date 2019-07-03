@@ -10,6 +10,7 @@ import com.fi1.langstudy.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -22,16 +23,6 @@ public class GroupService {
 
     public List<Group> findAll() {
         return groupRepository.findAll();
-    }
-
-    @Autowired
-    public void setGroupRepository(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-    }
-
-    @Autowired
-    public void setGroupMemberRepository(GroupMemberRepository groupMemberRepository) {
-        this.groupMemberRepository = groupMemberRepository;
     }
 
     public boolean createGroup(ModelGroup modelGroup) {
@@ -47,9 +38,24 @@ public class GroupService {
         return true;
     }
 
+    @Transactional
+    public boolean delete(Long id) {
+        return groupRepository.deleteGroupById(id);
+    }
+
     private void saveGroupMember(Long wordId, Long groupId) {
         final GroupMemberId groupMemberId = new GroupMemberId(groupId, wordId);
         final GroupMember groupMember = new GroupMember(groupMemberId);
         groupMemberRepository.save(groupMember);
+    }
+
+    @Autowired
+    public void setGroupRepository(GroupRepository groupRepository) {
+        this.groupRepository = groupRepository;
+    }
+
+    @Autowired
+    public void setGroupMemberRepository(GroupMemberRepository groupMemberRepository) {
+        this.groupMemberRepository = groupMemberRepository;
     }
 }

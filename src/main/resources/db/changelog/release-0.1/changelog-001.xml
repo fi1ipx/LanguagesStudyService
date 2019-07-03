@@ -19,4 +19,8 @@
         <sqlFile path="create-group-tables.sql" relativeToChangelogFile="true" splitStatements="false"/>
     </changeSet>
 
+    <changeSet id="delete_word" author="fi1">
+        <sqlFile path="drop-functions.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>

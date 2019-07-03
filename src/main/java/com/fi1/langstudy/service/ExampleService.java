@@ -6,6 +6,7 @@ import com.fi1.langstudy.repository.ExampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,12 @@ public class ExampleService {
         Collections.reverse(examples);
         examples.forEach(v -> modelForListExamples.add(this.convertExample(v)));
         return modelForListExamples;
+    }
+
+    @Transactional
+    public boolean delete(Long id) {
+        exampleRepository.deleteOneExampleById(id);
+        return true;
     }
 
     private ModelForListExample convertExample(Example example) {
