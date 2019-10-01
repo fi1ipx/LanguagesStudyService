@@ -8,6 +8,8 @@ import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.repository.ExampleRepository;
 import com.fi1.langstudy.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +26,10 @@ public class WordService {
 
     public List<Word> findAll() {
         return wordRepository.findAll();
+    }
+
+    public Page<Word> getPage(final Pageable pageable) {
+        return wordRepository.findAll(pageable);
     }
 
     public List<Example> findExamples(Long wordId) {

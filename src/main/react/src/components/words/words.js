@@ -14,22 +14,50 @@ export default class Words extends React.Component {
             wordsToAdd: '',
             showAddWordsToGroup: false,
             selectedGroupId: undefined,
-            isLoading: true,
+            isLoading: false,
+            totalPages: 0,
+            pageNumber: 0,
+            pageSize: 20,
         }
     }
 
     componentDidMount() {
-        this.fetchWords();
+        this.fetchWords(0);
         this.fetchGroups();
+        window.addEventListener("scroll", this.trackScrolling, false);
     }
 
-    fetchWords() {
-        this.setState({isLoading: true});
-        fetch(`${window.rest.apiUrl}/api/word`)
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.trackScrolling, false);
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('root');
+        if (this.isBottom(wrappedElement)) {
+            this.fetchWords(this.state.pageNumber + 1);
+            document.removeEventListener('scroll', this.trackScrolling);
+        }
+    };
+
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom - 350 <= window.innerHeight;
+    }
+
+    fetchWords(pageNumber) {
+        const { totalPages, isLoading } = this.state;
+        if ((pageNumber === 0 || (totalPages > pageNumber)) && !isLoading) {
+            this.setState({isLoading: true});
+            fetch(`${window.rest.apiUrl}/api/word?size=${this.state.pageSize}&page=${pageNumber}`)
             .then((resp) => resp.json())
             .then((data) => {
-                this.setState({words: data, isLoading: false})
+                this.setState({
+                    words: this.state.words.concat(data.content),
+                    isLoading: false,
+                    totalPages: data.totalPages,
+                    pageNumber: pageNumber,
+                })
             })
+        }
     }
 
     fetchGroups() {
@@ -142,8 +170,6 @@ export default class Words extends React.Component {
                     </button>
                 </form>
                 <br/>
-                {
-                    isLoading ? <Loader/> :
                     <table className="table table-striped">
                         <TableHeader/>
                         <tbody id="tbody">
@@ -156,7 +182,7 @@ export default class Words extends React.Component {
                                     } else {
                                         lastPractice = 'never';
                                     }
-                                    return <tr key={item.id}>
+                                    return <tr key={key}>
                                         <th scope="row">{key + 1}</th>
                                         <td>{item.name}</td>
                                         <td>{item.createdAt}</td>
@@ -197,9 +223,9 @@ export default class Words extends React.Component {
                                 :
                                 null
                         }
+                        { isLoading ? <tr><td><Loader/></td></tr> : null }
                         </tbody>
                     </table>
-                }
                 <br/>
                 <div className="form-group" style={{display: addToGroupVisible}}>
                     <label htmlFor="newWordsTextarea">Select a word group&nbsp;</label>

@@ -6,6 +6,7 @@ import com.fi1.langstudy.object.Example;
 import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,8 +29,8 @@ public class WordController {
     private WordService wordService;
 
     @GetMapping(value = {"/", ""})
-    public List<Word> findAll() {
-        return wordService.findAll();
+    public ResponseEntity<Object> getPage(final Pageable pageable) {
+        return new ResponseEntity<>(wordService.getPage(pageable), HttpStatus.OK);
     }
 
     @GetMapping({"/{id}/examples/", "/{id}/examples"})
