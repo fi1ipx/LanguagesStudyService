@@ -17,7 +17,7 @@ export default class Words extends React.Component {
             isLoading: false,
             totalPages: 0,
             pageNumber: 0,
-            pageSize: 20,
+            pageSize: 1000,
         }
     }
 
