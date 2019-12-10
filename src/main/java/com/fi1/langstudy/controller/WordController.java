@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +47,12 @@ public class WordController {
     @DeleteMapping({"/{id}/", "/{id}"})
     public ResponseEntity<Object> delete(@PathVariable("id") final Long wordId) {
         return new ResponseEntity<>(wordService.delete(wordId), HttpStatus.OK);
+    }
+
+    @PatchMapping({"/{id}/", "/{id}"})
+    public ResponseEntity<Object> patch(@PathVariable("id") final Long wordId,
+                                        @RequestBody final Word newWord) {
+        return new ResponseEntity<>(wordService.patch(wordId, newWord), HttpStatus.OK);
     }
 
     @PostMapping({"/example/", "/example"})

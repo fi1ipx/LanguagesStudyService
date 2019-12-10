@@ -59,6 +59,13 @@ public class WordService {
         return wordRepository.deleteWordById(wordId);
     }
 
+    @Transactional
+    public Word patch(Long wordId, Word newWord) {
+        final Word word = wordRepository.findById(wordId).orElseThrow();
+        word.setName(newWord.getName());
+        return wordRepository.save(word);
+    }
+
     @Autowired
     public void setWordRepository(WordRepository wordRepository) {
         this.wordRepository = wordRepository;
