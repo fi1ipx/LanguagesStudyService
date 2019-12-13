@@ -1,8 +1,9 @@
 import React from 'react';
 import './index.css';
 import 'antd/dist/antd.css';
-import { Button, Divider, Form, Input, Popconfirm, Table } from 'antd';
+import { Button, Divider, Form, Icon, Input, Popconfirm, Table } from 'antd';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
+import Highlighter from 'react-highlight-words';
 
 const EditableContext = React.createContext();
 
@@ -51,6 +52,75 @@ class EditableCell extends React.Component {
 }
 
 class Words extends React.Component {
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) => {
+      if (record[dataIndex] !== null) {
+        return record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase())}
+    },
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    console.log(selectedKeys, confirm, dataIndex);
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
   constructor(props) {
     super(props);
 
@@ -66,6 +136,8 @@ class Words extends React.Component {
       pageNumber: 0,
       pageSize: 1000,
       editingKey: '',
+      searchText: '',
+      searchedColumn: '',
     };
 
     this.columns = [
@@ -76,6 +148,7 @@ class Words extends React.Component {
         editable: true,
         sorter: (a, b) => a.name.localeCompare(b.name),
         sortDirections: ['descend', 'ascend'],
+        ...this.getColumnSearchProps('name')
       },
       {
         title: 'Practiced',
@@ -146,7 +219,7 @@ class Words extends React.Component {
               </a> - <a href={'no-action'} disabled={editingKey !== ''} onClick={
               (e) => this.edit(record.key, e)}>
               Edit
-              </a> - <a href={"delete/" + record.key} onClick={e => {
+            </a> - <a href={"delete/" + record.key} onClick={e => {
               this.deleteWord(e, record.key)
             }}>Del</a>
             </>
