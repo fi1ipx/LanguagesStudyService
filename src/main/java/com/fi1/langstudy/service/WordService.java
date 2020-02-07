@@ -7,6 +7,7 @@ import com.fi1.langstudy.object.Example;
 import com.fi1.langstudy.object.Word;
 import com.fi1.langstudy.repository.ExampleRepository;
 import com.fi1.langstudy.repository.WordRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
+@Slf4j
 public class WordService {
 
     private WordRepository wordRepository;
@@ -37,6 +39,7 @@ public class WordService {
     }
 
     public boolean createList(ModelWordList modelWordList) {
+        log.info("Creating {}", modelWordList);
         wordRepository.saveAll(wordConverterAndValidatorComponent.pullWordList(modelWordList));
         return true;
     }

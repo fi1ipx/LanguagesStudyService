@@ -1,95 +1,301 @@
 import React from 'react';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
-import Loader from "../loader/loader";
+import { Button, Divider, Form, Icon, Input, Popconfirm, Table } from "antd";
+import Highlighter from "react-highlight-words";
 
-export default class Examples extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            examples: [],
-            isLoading: true,
-        }
-    }
+const EditableContext = React.createContext();
 
-    componentDidMount() {
-        this.fetchExamples();
-    }
+class EditableCell extends React.Component {
+  getInput = () => {
+    return <Input/>;
+  };
 
-    fetchExamples() {
-        this.setState({isLoading: true});
-        const that = this;
-        fetch(`${window.rest.apiUrl}/api/example`)
-            .then((resp) => resp.json())
-            .then(function (data) {
-                that.setState({examples: data, isLoading: false});
-            })
-    }
+  renderCell = ({ getFieldDecorator }) => {
+    const {
+      editing,
+      dataIndex,
+      title,
+      inputType,
+      record,
+      index,
+      children,
+      ...restProps
+    } = this.props;
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item style={{ margin: 0 }}>
+            {getFieldDecorator(dataIndex, {
+              rules: [
+                {
+                  required: true,
+                  message: `Please Input ${title}!`,
+                },
+              ],
+              initialValue: record[dataIndex],
+            })(this.getInput())}
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
 
-    deleteExample = (e, id) => {
-        e.preventDefault();
-        fetch(`${window.rest.apiUrl}/api/example/${id}`, {
-            method: 'DELETE',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-        })
-            .then(() => {
-                this.fetchExamples();
-            })
-            .catch(err => console.log(err));
+  render() {
+    return <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>;
+  }
+}
+
+class Examples extends React.Component {
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }}/>
+    ),
+    onFilter: (value, record) => {
+      if (record[dataIndex] !== null) {
+        return record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase())
+      }
+    },
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    console.log(selectedKeys, confirm, dataIndex);
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      examples: [],
+      editingKey: '',
+      isLoading: true,
     };
 
-    render() {
-        const {examples, isLoading} = this.state;
+    this.columns = [
+      {
+        title: 'The word',
+        dataIndex: 'word',
+        width: '8%',
+        editable: false,
+        sorter: (a, b) => a.word - b.word,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Example',
+        dataIndex: 'text',
+        width: '24%',
+        editable: true,
+        sorter: (a, b) => a.text.localeCompare(b.text),
+        sortDirections: ['descend', 'ascend'],
+        ...this.getColumnSearchProps('text')
+      },
+      {
+        title: 'Dictionaries',
+        dataIndex: 'dictionaries',
+        width: '8%',
+        render: (text, record) => {
+          return (
+            <span>
+              <DictionaryLinks word={record.word}/>
+            </span>
+          );
+        },
+      },
+      {
+        title: 'Example date',
+        dataIndex: 'createdAt',
+        width: '10%',
+        editable: false,
+        sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Word date',
+        dataIndex: 'wordCreatedAt',
+        width: '10%',
+        editable: false,
+        sorter: (a, b) => new Date(a.wordCreatedAt) - new Date(b.wordCreatedAt),
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Operation',
+        dataIndex: 'operation',
+        width: '10%',
+        render: (text, record) => {
+          const { editingKey } = this.state;
+          const editable = this.isEditing(record);
+          return editable ? (
+            <span>
+              <EditableContext.Consumer>
+                {form => (
+                  <a
+                    href={'no-action'}
+                    onClick={(e) => this.save(e, form, record.wordId)}
+                    style={{ marginRight: 8 }}
+                  >
+                    Save
+                  </a>
+                )}
+              </EditableContext.Consumer>
+              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.wordId)}>
+                <a href={'no-action'}>Cancel</a>
+              </Popconfirm>
+            </span>
+          ) : (
+            <>
+              <a
+                rel="noopener noreferrer" target="_blank"
+                href={'/practice/' + record.wordId}>
+                Practice
+              </a> - <a href={'no-action'} disabled={editingKey !== ''} onClick={
+              (e) => this.edit(record.wordId, e)}>
+              Edit
+            </a> - <a href={"delete/" + record.wordId} onClick={e => {
+              this.deleteWord(e, record.wordId) // TODO implement method delete example
+            }}>Del</a>
+            </>
+          );
+        },
+      },
+    ];
+  }
 
-        return (
-            <div id="test" className="container">
-                {
-                    isLoading ? <Loader/> :
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">The word</th>
-                                <th scope="col">Example</th>
-                                <th scope="col">Dictionaries</th>
-                                <th scope="col">Example date</th>
-                                <th scope="col">Word date</th>
-                                <th scope="col">Manage</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody">
-                            {
-                                examples ?
-                                    examples.map((item, key) => {
+  componentDidMount() {
+    this.fetchExamples();
+  }
 
-                                        return <tr key={item.id}>
-                                            <th scope="row">{key + 1}</th>
-                                            <td>
-                                                <a
-                                                    rel="noopener noreferrer" target="_blank"
-                                                    href={'/practice/' + item.wordId}>
-                                                    {item.word}
-                                                </a>
-                                            </td>
-                                            <td>{item.text}</td>
-                                            <td><DictionaryLinks word={item.word}/></td>
-                                            <td>{item.createdAt}</td>
-                                            <td>{item.wordCreatedAt}</td>
-                                            <td>
-                                                <a href={"delete/" + item.id} onClick={e => {
-                                                    this.deleteExample(e, item.id)
-                                                }}>Del</a>
-                                            </td>
-                                        </tr>
-                                    })
-                                    :
-                                    null
-                            }
-                            </tbody>
-                        </table>
-                }
-            </div>
-        )
-    }
+  fetchExamples() {
+    this.setState({ isLoading: true });
+    const that = this;
+    fetch(`${window.rest.apiUrl}/api/example`)
+    .then((resp) => resp.json())
+    .then(function (data) {
+      that.setState({ examples: data, isLoading: false });
+    })
+  }
+
+  deleteExample = (e, id) => {
+    e.preventDefault();
+    fetch(`${window.rest.apiUrl}/api/example/${id}`, {
+      method: 'DELETE',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+    })
+    .then(() => {
+      this.fetchExamples();
+    })
+    .catch(err => console.log(err));
+  };
+
+  isEditing = record => record.wordId === this.state.editingKey;
+
+  cancel = () => {
+    this.setState({ editingKey: '' });
+  };
+
+  edit(key, e) {
+    e.preventDefault();
+    this.setState({ editingKey: key });
+  }
+
+  render() {
+    const { examples } = this.state;
+
+    const components = {
+      body: {
+        cell: EditableCell,
+      },
+    };
+
+    const columns = this.columns.map(col => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: this.isEditing(record),
+        }),
+      };
+    });
+
+    return (
+      <EditableContext.Provider value={this.props.form}>
+        <Divider/>
+        <Table
+          components={components}
+          bordered
+          dataSource={examples}
+          columns={columns}
+          rowKey={"id"}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: this.cancel,
+            defaultPageSize: 100,
+          }}
+        />
+      </EditableContext.Provider>
+    );
+  }
 }
+
+export default Form.create()(Examples);
