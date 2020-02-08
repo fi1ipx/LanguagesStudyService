@@ -132,7 +132,7 @@ class Examples extends React.Component {
         dataIndex: 'word',
         width: '8%',
         editable: false,
-        sorter: (a, b) => a.word - b.word,
+        sorter: (a, b) => a.word.localeCompare(b.word),
         sortDirections: ['descend', 'ascend'],
       },
       {
@@ -185,14 +185,14 @@ class Examples extends React.Component {
                 {form => (
                   <a
                     href={'no-action'}
-                    onClick={(e) => this.save(e, form, record.wordId)}
+                    onClick={(e) => this.save(e, form, record.id)}
                     style={{ marginRight: 8 }}
                   >
                     Save
                   </a>
                 )}
               </EditableContext.Consumer>
-              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.wordId)}>
+              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.id)}>
                 <a href={'no-action'}>Cancel</a>
               </Popconfirm>
             </span>
@@ -203,10 +203,10 @@ class Examples extends React.Component {
                 href={'/practice/' + record.wordId}>
                 Practice
               </a> - <a href={'no-action'} disabled={editingKey !== ''} onClick={
-              (e) => this.edit(record.wordId, e)}>
+              (e) => this.edit(record.id, e)}>
               Edit
-            </a> - <a href={"delete/" + record.wordId} onClick={e => {
-              this.deleteWord(e, record.wordId) // TODO implement method delete example
+            </a> - <a href={"delete/" + record.id} onClick={e => {
+              this.deleteExample(e, record.id)
             }}>Del</a>
             </>
           );
@@ -243,10 +243,53 @@ class Examples extends React.Component {
     .catch(err => console.log(err));
   };
 
-  isEditing = record => record.wordId === this.state.editingKey;
+  isEditing = record => record.id === this.state.editingKey;
 
   cancel = () => {
     this.setState({ editingKey: '' });
+  };
+
+  save(e, form, key) {
+    e.preventDefault();
+    form.validateFields((error, row) => {
+      if (error) {
+        return;
+      }
+      const newData = [...this.state.examples];
+      const index = newData.findIndex(item => key === item.id);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        this.saveOnTheServer(item, row);
+        this.setState({ examples: newData, editingKey: '' });
+      } else {
+        newData.push(row);
+        this.setState({ examples: newData, editingKey: '' });
+      }
+    });
+  }
+
+  saveOnTheServer = (item, row) => {
+    console.log(item, row);
+    fetch(`${window.rest.apiUrl}/api/example/${item.id}`, {
+      method: 'PATCH',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(row)
+    })
+    .then(() => {
+      //
+    })
+    .catch(err => console.log(err));
   };
 
   edit(key, e) {

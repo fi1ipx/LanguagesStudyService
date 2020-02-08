@@ -27,14 +27,17 @@ public class WordService {
     private WordConverterAndValidatorComponent wordConverterAndValidatorComponent;
 
     public List<Word> findAll() {
+        log.info("Trying to find all words");
         return wordRepository.findAll();
     }
 
     public Page<Word> getPage(final Pageable pageable) {
+        log.info("Getting page {}", pageable);
         return wordRepository.findAll(pageable);
     }
 
     public List<Example> findExamples(Long wordId) {
+        log.info("Trying to find examples of the word with id = {}", wordId);
         return exampleRepository.findAllByWordId(wordId);
     }
 
@@ -45,6 +48,7 @@ public class WordService {
     }
 
     public boolean createExample(ModelExample modelExample) {
+        log.info("Creating example {}", modelExample);
         final Example example = new Example();
         example.setText(modelExample.getText());
         example.setWord(wordRepository.getOne(modelExample.getWordId()));
@@ -54,16 +58,19 @@ public class WordService {
     }
 
     public Word findById(Long id) {
+        log.info("Trying to find the word with id = {}", id);
         return wordRepository.findById(id).orElseThrow();
     }
 
     @Transactional
     public boolean delete(Long wordId) {
+        log.info("Deleting the word with id = {}", wordId);
         return wordRepository.deleteWordById(wordId);
     }
 
     @Transactional
     public Word patch(Long wordId, Word newWord) {
+        log.info("Trying to patch the word with id = {} on {}", wordId, newWord.getName());
         final Word word = wordRepository.findById(wordId).orElseThrow();
         word.setName(newWord.getName());
         return wordRepository.save(word);
