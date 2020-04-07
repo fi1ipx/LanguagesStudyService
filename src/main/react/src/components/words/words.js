@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 import 'antd/dist/antd.css';
-import { Button, Divider, Form, Icon, Input, Popconfirm, Table } from 'antd';
+import { Button, Divider, Form, Icon, Input, Popconfirm, Table, Popover } from 'antd';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 import Highlighter from 'react-highlight-words';
 
@@ -121,6 +121,12 @@ class Words extends React.Component {
     this.setState({ searchText: '' });
   };
 
+  convertExamplesArrToStr(examples) {
+    let retArr = [];
+    examples.forEach(x => retArr.push(<p>{x.text}</p>));
+    return (<div>{retArr}</div>);
+  }
+
   constructor(props) {
     super(props);
 
@@ -154,6 +160,13 @@ class Words extends React.Component {
         title: 'Practiced',
         dataIndex: 'practiced',
         width: '10%',
+        render: (text, record) => {
+          return (
+            <Popover placement="bottomLeft" content={this.convertExamplesArrToStr(record.examples)} trigger="hover">
+              {record.practiced}
+            </Popover>
+          );
+        },
         editable: false,
         sorter: (a, b) => a.practiced - b.practiced,
         sortDirections: ['descend', 'ascend'],
