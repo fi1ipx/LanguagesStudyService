@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import { Button, Divider, Form, Icon, Input, Popconfirm, Table, Popover } from 'antd';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 import Highlighter from 'react-highlight-words';
+import axios from 'axios';
 
 const EditableContext = React.createContext();
 
@@ -140,7 +141,7 @@ class Words extends React.Component {
       isLoading: false,
       totalPages: 0,
       pageNumber: 0,
-      pageSize: 1000,
+      pageSize: 2000,
       editingKey: '',
       searchText: '',
       searchedColumn: '',
@@ -247,11 +248,10 @@ class Words extends React.Component {
   }
 
   fetchWords(pageNumber) {
-    fetch(`${window.rest.apiUrl}/api/word?size=${this.state.pageSize}&page=${pageNumber}`)
-    .then((resp) => resp.json())
-    .then((data) => {
+    axios.get(`${window.rest.apiUrl}/api/word?size=${this.state.pageSize}&page=${pageNumber}`)
+    .then((resp) => {
       let words = [];
-      data.content.forEach(item => {
+      resp.data.content.forEach(item => {
         const pullLastPracticedDate = (exampleArr) => {
           if (exampleArr !== undefined && exampleArr.length > 0) {
             const val = exampleArr.map(function (e) {
@@ -277,10 +277,9 @@ class Words extends React.Component {
   }
 
   fetchGroups() {
-    fetch(`${window.rest.apiUrl}/api/group`)
-    .then((resp) => resp.json())
-    .then((data) => {
-      this.setState({ groups: data })
+    axios.get(`${window.rest.apiUrl}/api/group`)
+    .then((resp) => {
+      this.setState({ groups: resp.data })
     })
   }
 
@@ -288,34 +287,11 @@ class Words extends React.Component {
     this.setState({ wordsToAdd: e.target.value });
   };
 
-  handleCheckBoxSelect = (e) => {
-    const selectedValues = this.state.selectedWords.slice();
-    if (e.target.checked) {
-      selectedValues.push(e.target.value);
-    } else {
-      const delIndex = selectedValues.indexOf(e.target.value);
-      selectedValues.splice(delIndex, 1);
-    }
-    const showAddWordsToGroup = selectedValues.length > 0;
-    this.setState({
-      selectedWords: selectedValues,
-      showAddWordsToGroup,
-    })
-  };
-
   handleSubmit = (e) => {
-    fetch(`${window.rest.apiUrl}/api/word/create-word-list`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify({ words: this.state.wordsToAdd })
-    })
+    axios.post(`${window.rest.apiUrl}/api/word/create-word-list`, JSON.stringify({ words: this.state.wordsToAdd }), { headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }})
     .then(() => {
       this.setState({ wordsToAdd: '' });
       this.fetchWords();
@@ -324,40 +300,9 @@ class Words extends React.Component {
     e.preventDefault();
   };
 
-  handleAddToTheGroup = (e) => {
-    fetch(`${window.rest.apiUrl}/api/group/add-group-members`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify({
-        groupId: this.state.selectedGroupId,
-        wordIds: this.state.selectedWords,
-      })
-    })
-    .then(() => {
-      this.setState({ selectedWords: [], selectedGroupId: null });
-    })
-    .catch(err => console.log(err));
-  };
-
-  handleChangeGroup = (e) => {
-    this.setState({ selectedGroupId: e.target.value });
-  };
-
   deleteWord = (e, wordId) => {
     e.preventDefault();
-    fetch(`${window.rest.apiUrl}/api/word/${wordId}`, {
-      method: 'DELETE',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-    })
+    axios.delete(`${window.rest.apiUrl}/api/word/${wordId}`)
     .then(() => {
       this.fetchWords();
     })
@@ -395,18 +340,9 @@ class Words extends React.Component {
 
   saveOnTheServer = (item, row) => {
     console.log(item, row);
-    fetch(`${window.rest.apiUrl}/api/word/${item.id}`, {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(row)
-    })
+    axios.patch(`${window.rest.apiUrl}/api/word/${item.id}`, JSON.stringify(row), {headers: {
+      'Content-Type': 'application/json',
+    }})
     .then(() => {
       //
     })

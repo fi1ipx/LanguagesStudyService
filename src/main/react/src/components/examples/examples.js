@@ -2,6 +2,7 @@ import React from 'react';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 import { Button, Divider, Form, Icon, Input, Popconfirm, Table } from "antd";
 import Highlighter from "react-highlight-words";
+import axios from 'axios';
 
 const EditableContext = React.createContext();
 
@@ -222,8 +223,8 @@ class Examples extends React.Component {
   fetchExamples() {
     this.setState({ isLoading: true });
     const that = this;
-    fetch(`${window.rest.apiUrl}/api/example`)
-    .then((resp) => resp.json())
+    axios.get(`${window.rest.apiUrl}/api/example`)
+    .then((resp) => resp.data)
     .then(function (data) {
       that.setState({ examples: data, isLoading: false });
     })
@@ -231,12 +232,7 @@ class Examples extends React.Component {
 
   deleteExample = (e, id) => {
     e.preventDefault();
-    fetch(`${window.rest.apiUrl}/api/example/${id}`, {
-      method: 'DELETE',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-    })
+    axios.delete(`${window.rest.apiUrl}/api/example/${id}`)
     .then(() => {
       this.fetchExamples();
     })
@@ -274,18 +270,10 @@ class Examples extends React.Component {
 
   saveOnTheServer = (item, row) => {
     console.log(item, row);
-    fetch(`${window.rest.apiUrl}/api/example/${item.id}`, {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(row)
-    })
+    axios.patch(`${window.rest.apiUrl}/api/example/${item.id}`, JSON.stringify(row), { headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }})
     .then(() => {
       //
     })

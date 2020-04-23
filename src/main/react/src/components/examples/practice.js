@@ -1,5 +1,6 @@
 import React from 'react';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
+import axios from 'axios';
 
 export default class Examples extends React.Component {
   constructor(props) {
@@ -19,13 +20,12 @@ export default class Examples extends React.Component {
 
   fetchTheWord() {
     const that = this;
-    fetch(`${window.rest.apiUrl}/api/word/${this.state.wordId}`)
-    .then((response) => response.json())
-    .then(function (data) {
+    axios.get(`${window.rest.apiUrl}/api/word/${this.state.wordId}`)
+    .then(function (resp) {
       that.setState({
-        examples: data.examples,
-        word: data.name,
-        wordCreatedAt: data.createdAt,
+        examples: resp.data.examples,
+        word: resp.data.name,
+        wordCreatedAt: resp.data.createdAt,
       });
     })
   }
@@ -35,23 +35,14 @@ export default class Examples extends React.Component {
   };
 
   handleSubmit = (e) => {
-    fetch(`${window.rest.apiUrl}/api/word/example`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(
+    axios.post(`${window.rest.apiUrl}/api/word/example`, JSON.stringify(
         {
           wordId: this.state.wordId,
           text: this.state.exampleToAdd
         }
-      )
-    })
+      ), {headers: {
+      'Content-Type': 'application/json',
+    }})
     .then(() => {
       this.setState({ exampleToAdd: '' });
       this.fetchTheWord();

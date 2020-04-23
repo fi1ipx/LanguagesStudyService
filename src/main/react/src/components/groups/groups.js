@@ -1,6 +1,7 @@
 import React from 'react';
 import TableHeader from "../words/tableHeader";
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
+import axios from 'axios';
 
 export default class Groups extends React.Component {
     constructor(props) {
@@ -20,10 +21,9 @@ export default class Groups extends React.Component {
     }
 
     fetchGroups() {
-        fetch(`${window.rest.apiUrl}/api/group`)
-            .then((resp) => resp.json())
-            .then((data) => {
-                this.setState({groups: data})
+        axios.get(`${window.rest.apiUrl}/api/group`)
+            .then((resp) => {
+                this.setState({groups: resp.data})
             })
     }
 
