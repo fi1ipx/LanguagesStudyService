@@ -1,6 +1,6 @@
 import React from 'react';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
-import { Button, Divider, Form, Icon, Input, Popconfirm, Table } from "antd";
+import { Button, Divider, Form, Icon, Input, notification, Popconfirm, Table } from "antd";
 import Highlighter from "react-highlight-words";
 import axios from 'axios';
 
@@ -49,6 +49,13 @@ class EditableCell extends React.Component {
 }
 
 class Examples extends React.Component {
+  openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message,
+      description,
+    });
+  };
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -228,6 +235,8 @@ class Examples extends React.Component {
     .then(function (data) {
       that.setState({ examples: data, isLoading: false });
     })
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch examples', err.response))
   }
 
   deleteExample = (e, id) => {
@@ -235,8 +244,11 @@ class Examples extends React.Component {
     axios.delete(`${window.rest.apiUrl}/api/example/${id}`)
     .then(() => {
       this.fetchExamples();
+      this.openNotificationWithIcon('success',
+        'The example deleted', 'The example successfully deleted')
     })
-    .catch(err => console.log(err));
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch words', err.response));
   };
 
   isEditing = record => record.id === this.state.editingKey;
@@ -275,9 +287,11 @@ class Examples extends React.Component {
           'Content-Type': 'application/json'
         }})
     .then(() => {
-      //
+      this.openNotificationWithIcon('success',
+        'The example modified', 'The example successfully modified')
     })
-    .catch(err => console.log(err));
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch words', err.response));
   };
 
   edit(key, e) {

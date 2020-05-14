@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 import 'antd/dist/antd.css';
-import { Button, Divider, Form, Icon, Input, Popconfirm, Table, Popover } from 'antd';
+import { Button, Divider, Form, Icon, Input, Popconfirm, Table, Popover, notification } from 'antd';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 import Highlighter from 'react-highlight-words';
 import axios from 'axios';
@@ -53,6 +53,13 @@ class EditableCell extends React.Component {
 }
 
 class Words extends React.Component {
+  openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message,
+      description,
+    });
+  };
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -274,6 +281,8 @@ class Words extends React.Component {
         words,
       })
     })
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch words', err.response))
   }
 
   fetchGroups() {
@@ -281,6 +290,8 @@ class Words extends React.Component {
     .then((resp) => {
       this.setState({ groups: resp.data })
     })
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch groups', err.response))
   }
 
   textareaHandleChange = (e) => {
@@ -295,8 +306,11 @@ class Words extends React.Component {
     .then(() => {
       this.setState({ wordsToAdd: '' });
       this.fetchWords();
+      this.openNotificationWithIcon('success',
+        'New words added', 'New words successfully added')
     })
-    .catch(err => console.log(err));
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t create words', err.response));
     e.preventDefault();
   };
 
@@ -305,8 +319,11 @@ class Words extends React.Component {
     axios.delete(`${window.rest.apiUrl}/api/word/${wordId}`)
     .then(() => {
       this.fetchWords();
+      this.openNotificationWithIcon('success',
+        'The word deleted', 'The word successfully deleted')
     })
-    .catch(err => console.log(err));
+    .catch(err => err => this.openNotificationWithIcon('error',
+      'Can\'t delete a word', err.response));
   };
 
   isEditing = record => record.key === this.state.editingKey;
@@ -344,9 +361,11 @@ class Words extends React.Component {
       'Content-Type': 'application/json',
     }})
     .then(() => {
-      //
+      this.openNotificationWithIcon('success',
+        'The word modified', 'The word successfully modified')
     })
-    .catch(err => console.log(err));
+    .catch(err => err => this.openNotificationWithIcon('error',
+      'Can\'t modify a word', err.response));
   };
 
   edit(key, e) {

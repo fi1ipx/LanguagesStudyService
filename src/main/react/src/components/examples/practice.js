@@ -1,8 +1,16 @@
 import React from 'react';
 import DictionaryLinks from "../dictionaryLinks/dictionaryLinks";
 import axios from 'axios';
+import { notification } from 'antd';
 
 export default class Examples extends React.Component {
+  openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message,
+      description,
+    });
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +36,8 @@ export default class Examples extends React.Component {
         wordCreatedAt: resp.data.createdAt,
       });
     })
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t fetch examples', err.response))
   }
 
   textareaHandleChange = (e) => {
@@ -46,8 +56,11 @@ export default class Examples extends React.Component {
     .then(() => {
       this.setState({ exampleToAdd: '' });
       this.fetchTheWord();
+      this.openNotificationWithIcon('success',
+        'The example saved', 'The example successfully saved')
     })
-    .catch(err => console.log(err));
+    .catch(err => this.openNotificationWithIcon('error',
+      'Can\'t save an example', err.response));
     e.preventDefault();
   };
 
